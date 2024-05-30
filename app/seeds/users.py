@@ -1,28 +1,69 @@
 from app.models import db, User, environment, SCHEMA
 from sqlalchemy.sql import text
+from faker import Faker
 
+fake = Faker()
 
-# Adds a demo user, you can add other users here if you want
 def seed_users():
-    demo = User(
-        username='Demo', email='demo@aa.io', password='password')
-    marnie = User(
-        username='marnie', email='marnie@aa.io', password='password')
-    bobbie = User(
-        username='bobbie', email='bobbie@aa.io', password='password')
+    all_users = [
+        {
+            "first_name": fake.first_name(),
+            "last_name": fake.last_name(),
+            "username": fake.user_name(),
+            "email": fake.email(),
+            "about": fake.sentence(),
+            "hashed_password": "password123",  
+            "profile_image": fake.image_url(),
+            "private": fake.boolean()
+        },
+        {
+            "first_name": fake.first_name(),
+            "last_name": fake.last_name(),
+            "username": fake.user_name(),
+            "email": fake.email(),
+            "about": fake.sentence(),
+            "hashed_password": "password123",
+            "profile_image": fake.image_url(),
+            "private": fake.boolean()
+        },
+        {
+            "first_name": fake.first_name(),
+            "last_name": fake.last_name(),
+            "username": fake.user_name(),
+            "email": fake.email(),
+            "about": fake.sentence(),
+            "hashed_password": "password123",
+            "profile_image": fake.image_url(),
+            "private": fake.boolean()
+        },
+        {
+            "first_name": fake.first_name(),
+            "last_name": fake.last_name(),
+            "username": fake.user_name(),
+            "email": fake.email(),
+            "about": fake.sentence(),
+            "hashed_password": "password123",
+            "profile_image": fake.image_url(),
+            "private": fake.boolean()
+        },
+        {
+            "first_name": fake.first_name(),
+            "last_name": fake.last_name(),
+            "username": fake.user_name(),
+            "email": fake.email(),
+            "about": fake.sentence(),
+            "hashed_password": "password123",
+            "profile_image": fake.image_url(),
+            "private": fake.boolean()
+        }
+    ]
 
-    db.session.add(demo)
-    db.session.add(marnie)
-    db.session.add(bobbie)
+    create_users = [User(**user) for user in all_users]
+    add_users = [db.session.add(user) for user in create_users]
     db.session.commit()
+    return create_users
 
 
-# Uses a raw SQL query to TRUNCATE or DELETE the users table. SQLAlchemy doesn't
-# have a built in function to do this. With postgres in production TRUNCATE
-# removes all the data from the table, and RESET IDENTITY resets the auto
-# incrementing primary key, CASCADE deletes any dependent entities.  With
-# sqlite3 in development you need to instead use DELETE to remove all data and
-# it will reset the primary keys for you as well.
 def undo_users():
     if environment == "production":
         db.session.execute(f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")

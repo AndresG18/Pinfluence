@@ -1,11 +1,11 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField
-from wtforms.validators import DataRequired, Email, ValidationError
+from wtforms import StringField,TextAreaField,BooleanField
+from wtforms.validators import DataRequired, Email, ValidationError,Length
 from app.models import User
-
+from flask_wtf.file import FileField,FileAllowed,FileRequired
+from app.api.AWS import ALLOWED_EXTENSIONS
 
 def user_exists(form, field):
-    # Checking if user exists
     email = field.data
     user = User.query.filter(User.email == email).first()
     if user:
@@ -13,7 +13,6 @@ def user_exists(form, field):
 
 
 def username_exists(form, field):
-    # Checking if username is already in use
     username = field.data
     user = User.query.filter(User.username == username).first()
     if user:
@@ -21,7 +20,11 @@ def username_exists(form, field):
 
 
 class SignUpForm(FlaskForm):
-    username = StringField(
-        'username', validators=[DataRequired(), username_exists])
+    first_name = StringField('First Name', validators=[Length(max=30)])
+    last_name = StringField('Last Name', validators=[Length(max=30)])
+    username = StringField('username', validators=[DataRequired(), username_exists])
     email = StringField('email', validators=[DataRequired(), user_exists])
+    about = TextAreaField('About')
     password = StringField('password', validators=[DataRequired()])
+    profile_image = FileField('Content File',validators=[FileAllowed(list(ALLOWED_EXTENSIONS))])
+    private = BooleanField('Private',default=False,validators=[DataRequired()])
