@@ -1,4 +1,4 @@
-from app.models import db, pin_board, environment, SCHEMA
+from app.models import db, pin_board, environment, SCHEMA,Board,Pin
 from sqlalchemy.sql import text
 
 def seed_board_pins():
@@ -65,15 +65,14 @@ def seed_board_pins():
         {"board_id": 27, "pin_id": 53},
         {"board_id": 27, "pin_id": 54},
         {"board_id": 28, "pin_id": 55},
-        {"board_id": 28, "pin_id": 56},
-        {"board_id": 29, "pin_id": 57},
-        {"board_id": 29, "pin_id": 58}
+        {"board_id": 28, "pin_id": 56}
     ]
 
     for board_pin in all_board_pins:
-        stmt = pin_board.insert().values(board_id=board_pin['board_id'], pin_id=board_pin['pin_id'])
-        db.session.execute(stmt)
-    
+        board = Board.query.get(board_pin['board_id'])
+        pin = Pin.query.get(board_pin['pin_id'])
+        if board and pin:
+            board.pins.append(pin)
     db.session.commit()
 
 def undo_board_pins():
