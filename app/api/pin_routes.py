@@ -1,7 +1,7 @@
 from flask import Blueprint, request
-from app.models import db, User,Pin
+from app.models import db, User,Pin,PinComment,PinLike
 from flask_login import login_user,login_required,current_user
-from app.forms import PinForm
+from app.forms import PinForm, PinCommentForm
 from .AWS import upload_file_to_s3, get_unique_filename,remove_file_from_s3
 
 pin_routes = Blueprint('pins', __name__)
@@ -84,5 +84,87 @@ def delete_pin(pin_id):
     return {"message": "Pin successfully deleted"}, 200
 # Delete pin by id
 
+@pin_routes.route('/<int:pin_id>/comments')
+def get_comments(pin_id):
+    comments = PinComment.query.filter_by(pin_id=pin_id).all()
+    return {"Comments": [comment.to_dict() for comment in comments]}
+# Get all comments for a pin
 
+@pin_routes.route('/<int:comment_id>')
+def get_comment(comment_id):
+    comment = PinComment.query.get(comment_id)
+    if not comment: return {"message": "Comment not found"}, 404
+    return comment.to_dict()
+# Get a comment by id
 
+@pin_routes.route('/<int:pin_id>/comments/new', methods=['POST'])
+@login_required
+def create_comment(pin_id):
+    form = PinCommentForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+    if form.validate_on_submit():
+        comment = PinComment(
+            user_id=current_user.id,
+            pin_id=pin_id,
+            content=form.data['content']
+        )
+        db.session.add(comment)
+        db.session.commit()
+        return comment.to_dict()
+    else: return {"errors": form.errors}, 400
+# Create a comment
+
+@pin_routes.route('/<int:comment_id>/edit', methods=['PUT'])
+@login_required
+def edit_comment(comment_id):
+    comment = PinComment.query.get(comment_id)
+    if not comment: return {"message": "Comment not found"}, 404
+    is_auth = authorize(comment.user_id)
+    if is_auth: return is_auth
+    form = PinCommentForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+    if form.validate_on_submit():
+        comment.content = form.data['content']
+        db.session.commit()
+        return comment.to_dict()
+    return {"errors": form.errors}, 400
+# Edit a comment
+
+@pin_routes.route('/<int:comment_id>/delete', methods=['DELETE'])
+@login_required
+def delete_comment(comment_id):
+    comment = PinComment.query.get(comment_id)
+    if not comment: return {"message": "Comment not found"}, 404
+    is_auth = authorize(comment.user_id)
+    if is_auth: return is_auth
+    db.session.delete(comment)
+    db.session.commit()
+    return {"message": "Comment successfully deleted"}, 200
+# Delete a comment
+
+@pin_routes.route('/<int:pin_id>/likes')
+def get_pin_likes(pin_id):
+    pin = Pin.query.get(pin_id)
+    if not pin:
+        return {"message": "Pin not found"}, 404
+    likes = PinLike.query.filter_by(pin_id=pin_id).all()
+    return {"Likes": [like.user_id for like in likes]}
+# Get pin likes
+
+@pin_routes.route('/<int:pin_id>/like', methods=['POST'])
+@login_required
+def toggle_like(pin_id):
+    pin = Pin.query.get(pin_id)
+    if not pin:
+        return {"message": "Pin not found"}, 404
+    like = PinLike.query.filter_by(user_id=current_user.id, pin_id=pin_id).first()
+    if like:
+        db.session.delete(like)
+        message = "Pin unliked"
+    else:
+        new_like = PinLike(user_id=current_user.id, pin_id=pin_id)
+        db.session.add(new_like)
+        message = "Pin liked"
+    db.session.commit()
+    return {"message": message}, 200
+# Toggle like/unlike a pin
