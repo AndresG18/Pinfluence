@@ -18,6 +18,7 @@ def seed():
         undo_pin_comments()
         undo_boards()
         undo_pins()
+        undo_users()
         
     seed_users()
     seed_pins()

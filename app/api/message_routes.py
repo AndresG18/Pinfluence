@@ -14,7 +14,7 @@ def get_messages():
         "received": [message.to_dict() for message in received_messages],
         "sent": [message.to_dict() for message in sent_messages]
     }
-# Get all messages for the current user
+# Get all messages for user
 
 @message_routes.route('/new', methods=['POST'])
 @login_required
@@ -31,7 +31,7 @@ def send_message():
         db.session.commit()
         return message.to_dict(), 201
     return {"errors": form.errors}, 400
-# Send a new message
+# Send a message
 
 @message_routes.route('/<int:message_id>/delete', methods=['DELETE'])
 @login_required
@@ -44,4 +44,4 @@ def delete_message(message_id):
     db.session.delete(message)
     db.session.commit()
     return {"message": "Message successfully deleted"}, 200
-# Delete a message by ID
+# Delete message by ID
