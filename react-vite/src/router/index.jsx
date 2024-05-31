@@ -22,3 +22,14 @@ export const router = createBrowserRouter([
     ],
   },
 ]);
+
+// home page
+// explore page
+// pin form
+// view pin 
+// update pin form
+// view profile
+// edit profile form
+//view board
+// create comment form 
+// watever else is needed

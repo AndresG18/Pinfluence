@@ -19,7 +19,7 @@ def boards():
 def board(board_id):
     board = Board.query.get(board_id)
     if not board: return {"message": "Board not found"}, 404
-    return board.to_dict()
+    return {"pins":board.get_pins(),**board.to_dict()}
 # Get a board by id
 
 @board_routes.route('/new', methods=['POST'])

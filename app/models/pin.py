@@ -22,6 +22,10 @@ class Pin(db.Model):
     likes = db.relationship('PinLike', back_populates='pin', cascade="all, delete-orphan")
     comments = db.relationship('PinComment', back_populates='pin', cascade="all, delete-orphan")
 
+    def get_likes(self):
+        return len([like for like in self.likes])
+    
+    
     def to_dict(self):
         return {
             'id': self.id,
@@ -30,5 +34,6 @@ class Pin(db.Model):
             'description': self.description,
             'link': self.link,
             'user_id': self.user_id,
-            'timestamp': self.timestamp
+            'timestamp': self.timestamp,
+            'likes' : self.get_likes()
         }

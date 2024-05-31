@@ -5,10 +5,19 @@ import {
   combineReducers,
 } from "redux";
 import thunk from "redux-thunk";
-import sessionReducer from "./session";
+
+import boardsReducer from '../actions/boards';
+import boardReducer from '../actions/board';
+import pinsReducer from '../actions/pins';
+import pinReducer from '../actions/pin';
+import sessionReducer from './session';
 
 const rootReducer = combineReducers({
-  session: sessionReducer,
+    session: sessionReducer,
+    boards: boardsReducer,
+    board: boardReducer,
+    pins: pinsReducer,
+    pin: pinReducer,
 });
 
 let enhancer;

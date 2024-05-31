@@ -15,11 +15,15 @@ class Board(db.Model):
     user = db.relationship('User', back_populates='boards')
     pins = db.relationship('Pin', secondary=pin_board, back_populates='boards')
     followers = db.relationship('BoardFollow', back_populates='board', cascade="all, delete-orphan")
+    
+    def get_pins(self):
+        return [pin.to_dict() for pin in self.pins]
 
     def to_dict(self):
         return {
             'id': self.id,
+            'user_id': self.user_id,
             'name': self.name,
             'description': self.description,
-            'user_id': self.user_id
+            'count': len(self.pins)
         }

@@ -1,8 +1,15 @@
 const SET_USER = 'session/setUser';
+const EDIT_USER = 'session/editUser';
 const REMOVE_USER = 'session/removeUser';
+const TOGGLE_FOLLOW = 'session/toggleFollow';
 
 const setUser = (user) => ({
   type: SET_USER,
+  payload: user
+});
+
+const updateUser = (user) => ({
+  type: EDIT_USER,
   payload: user
 });
 
@@ -10,33 +17,38 @@ const removeUser = () => ({
   type: REMOVE_USER
 });
 
-export const thunkAuthenticate = () => async (dispatch) => {
-	const response = await fetch("/api/auth/");
-	if (response.ok) {
-		const data = await response.json();
-		if (data.errors) {
-			return;
-		}
+const toggleFollow = (user) => ({
+  type: TOGGLE_FOLLOW,
+  payload: user
+});
 
-		dispatch(setUser(data));
-	}
+export const thunkAuthenticate = () => async (dispatch) => {
+  const response = await fetch("/api/auth/");
+  if (response.ok) {
+    const data = await response.json();
+    if (data.errors) {
+      return;
+    }
+
+    dispatch(setUser(data));
+  }
 };
 
-export const thunkLogin = (credentials) => async dispatch => {
+export const thunkLogin = (credentials) => async (dispatch) => {
   const response = await fetch("/api/auth/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(credentials)
   });
 
-  if(response.ok) {
+  if (response.ok) {
     const data = await response.json();
     dispatch(setUser(data));
   } else if (response.status < 500) {
     const errorMessages = await response.json();
-    return errorMessages
+    return errorMessages;
   } else {
-    return { server: "Something went wrong. Please try again" }
+    return { server: "Something went wrong. Please try again" };
   }
 };
 
@@ -47,14 +59,14 @@ export const thunkSignup = (user) => async (dispatch) => {
     body: JSON.stringify(user)
   });
 
-  if(response.ok) {
+  if (response.ok) {
     const data = await response.json();
     dispatch(setUser(data));
   } else if (response.status < 500) {
     const errorMessages = await response.json();
-    return errorMessages
+    return errorMessages;
   } else {
-    return { server: "Something went wrong. Please try again" }
+    return { server: "Something went wrong. Please try again" };
   }
 };
 
@@ -63,14 +75,37 @@ export const thunkLogout = () => async (dispatch) => {
   dispatch(removeUser());
 };
 
+export const thunkUpdateUser = (userId, userData) => async (dispatch) => {
+  const response = await fetch(`/api/users/${userId}/edit`, {
+    method: "PUT",
+    body: userData
+  });
+  const data = await response.json();
+  if (response.ok) dispatch(updateUser(data));
+  return data;
+};
+
+export const thunkToggleFollow = (userId) => async (dispatch) => {
+  const response = await fetch(`/api/users/${userId}/follow`, {
+    method: "POST"
+  });
+  const data = await response.json();
+  if (response.ok) dispatch(toggleFollow(data.user));
+  return data;
+};
+
 const initialState = { user: null };
 
 function sessionReducer(state = initialState, action) {
   switch (action.type) {
     case SET_USER:
       return { ...state, user: action.payload };
+    case EDIT_USER:
+      return { ...state, user: action.payload };
     case REMOVE_USER:
       return { ...state, user: null };
+    case TOGGLE_FOLLOW:
+      return { ...state, user: action.payload };
     default:
       return state;
   }

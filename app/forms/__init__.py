@@ -4,3 +4,4 @@ from .pin_form import PinForm
 from .board_form import BoardForm
 from .pin_form import PinCommentForm
 from .message_form import MessageForm
+from .edit_user_form import EditProfileForm

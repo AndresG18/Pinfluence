@@ -16,11 +16,17 @@ def pins():
     return {"Pins":[pin.to_dict() for pin in all_pins]}
 # Get all Pins
 
+@pin_routes.route('/current')
+def user_pins():
+    all_pins = Pin.query.filter_by(user_id=current_user.id)
+    return {"Pins":[pin.to_dict() for pin in all_pins]}
+# Get all Pins
+
 @pin_routes.route('/<int:pin_id>')
 def pin(pin_id):
     pin = Pin.query.get(pin_id)
     if not pin : return {"message": "Pin not found"}, 404
-    return pin.to_dict()
+    return {**pin.to_dict(),"comments":[comment.to_dict() for comment in pin.comments] }
 # Get a pin by id
 
 @pin_routes.route('/new', methods=['POST'])
@@ -100,6 +106,7 @@ def get_comment(comment_id):
 @pin_routes.route('/<int:pin_id>/comments/new', methods=['POST'])
 @login_required
 def create_comment(pin_id):
+    pin = Pin.query.get(pin_id)
     form = PinCommentForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
@@ -110,7 +117,7 @@ def create_comment(pin_id):
         )
         db.session.add(comment)
         db.session.commit()
-        return comment.to_dict()
+        return pin.to_dict()
     else: return {"errors": form.errors}, 400
 # Create a comment
 
@@ -130,16 +137,17 @@ def edit_comment(comment_id):
     return {"errors": form.errors}, 400
 # Edit a comment
 
-@pin_routes.route('/<int:comment_id>/delete', methods=['DELETE'])
+@pin_routes.route('/<int:pin_id>/comments/<int:comment_id>/delete', methods=['DELETE'])
 @login_required
-def delete_comment(comment_id):
+def delete_comment(pin_id, comment_id):
+    pin = Pin.query.get(pin_id)
+    if not pin: return {"message": "Pin not found"}, 404
     comment = PinComment.query.get(comment_id)
     if not comment: return {"message": "Comment not found"}, 404
-    is_auth = authorize(comment.user_id)
-    if is_auth: return is_auth
+    if comment.user_id != current_user.id: return {"message": "Unauthorized"}, 403
     db.session.delete(comment)
     db.session.commit()
-    return {"message": "Comment successfully deleted"}, 200
+    return pin.to_dict()
 # Delete a comment
 
 @pin_routes.route('/<int:pin_id>/likes')
