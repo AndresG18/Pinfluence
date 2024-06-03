@@ -40,50 +40,54 @@ function SignupFormModal() {
 
   return (
     <>
-      <h1>Sign Up</h1>
-      {errors.server && <p>{errors.server}</p>}
-      <form onSubmit={handleSubmit}>
-        <label>
+      <h1 className="modal-title">Sign Up</h1>
+      {errors.server && <p className="modal-error">{errors.server}</p>}
+      <form onSubmit={handleSubmit} className="modal-form">
+        <label className="modal-label">
           Email
           <input
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            className="modal-input"
           />
         </label>
-        {errors.email && <p>{errors.email}</p>}
-        <label>
+        {errors.email && <p className="modal-error">{errors.email}</p>}
+        <label className="modal-label">
           Username
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
+            className="modal-input"
           />
         </label>
-        {errors.username && <p>{errors.username}</p>}
-        <label>
+        {errors.username && <p className="modal-error">{errors.username}</p>}
+        <label className="modal-label">
           Password
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            className="modal-input"
           />
         </label>
-        {errors.password && <p>{errors.password}</p>}
-        <label>
+        {errors.password && <p className="modal-error">{errors.password}</p>}
+        <label className="modal-label">
           Confirm Password
           <input
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
+            className="modal-input"
           />
         </label>
-        {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-        <button type="submit">Sign Up</button>
+        {errors.confirmPassword && <p className="modal-error">{errors.confirmPassword}</p>}
+        <button type="submit" className="modal-button">Sign Up</button>
       </form>
     </>
   );

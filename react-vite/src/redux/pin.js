@@ -38,7 +38,6 @@ export const thunkGetPin = (pinId) => async (dispatch) => {
 export const thunkCreatePin = (pin) => async (dispatch) => {
     const response = await fetch('/api/pins/new', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: pin
     });
     const data = await response.json();

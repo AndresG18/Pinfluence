@@ -3,13 +3,23 @@ import LoginFormPage from '../components/LoginFormPage';
 import SignupFormPage from '../components/SignupFormPage';
 import Layout from './Layout';
 
+import HomePage from '../components/HomePage/HomePage';
+import ExporePage from '../components/ExplorePage/ExporePage';
+import PinForm from '../components/PinComponents/PinForm';
+import PinUpdate from '../components/PinComponents/PinUpdate';
+import BoardForm from '../components/BoardComponents/BoardForm';
+import BoardUpdate from '../components/BoardComponents/BoardUpdate';
+import PinDetails from '../components/PinComponents/PinDetails';
+import BoardDetails from '../components/BoardComponents/BoardDetails';
+// import UserForm from '../components/UserComponents/UserForm';
+import UserPage from '../components/UserComponents/UserPage';
 export const router = createBrowserRouter([
   {
     element: <Layout />,
     children: [
       {
         path: "/",
-        element: <h1>Welcome!</h1>,
+        element: <HomePage/>,
       },
       {
         path: "login",
@@ -18,6 +28,38 @@ export const router = createBrowserRouter([
       {
         path: "signup",
         element: <SignupFormPage />,
+      },
+      {
+        path: "explore",
+        element: <ExporePage/>,
+      },
+      {
+        path: "/pins/:pinId",
+        element: <PinDetails />,
+      },
+      {
+        path: "/pins/new",
+        element: <PinForm />,
+      },
+      {
+        path: "/pins/:pinId/edit",
+        element: <PinUpdate />,
+      },
+      {
+        path: "/boards/:boardId/",
+        element: <BoardDetails />,
+      },
+      {
+        path: "/boards/new",
+        element: <BoardForm />,
+      },
+      {
+        path: "/boards/:boardId/edit",
+        element: <BoardUpdate />,
+      },
+      {
+        path: "/users/:userId",
+        element: <UserPage/>,
       },
     ],
   },
@@ -31,5 +73,4 @@ export const router = createBrowserRouter([
 // view profile
 // edit profile form
 //view board
-// create comment form 
 // watever else is needed

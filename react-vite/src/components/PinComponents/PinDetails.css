@@ -1,0 +1,112 @@
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.loading-spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border-left-color: #E60023;
+    animation: spin 1s ease infinite;
+    margin: 5px;
+}
+
+.loading-text {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #555;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.pin-box {
+    width: 80%;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    box-sizing: content-box;
+    margin: auto;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 1px 1px 5px 1px rgb(101, 101, 101);
+    margin-top: 25px;
+    flex-direction: row;
+    border-radius: 1.5rem;
+}
+
+.pin-img-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 50%;
+}
+
+.pin-img {
+    width: 100%;
+    border-radius: 1.5rem;
+}
+
+.pin-inner-right {
+    display: flex;
+    flex-direction: column;
+    align-self: start;
+    width: 50%;
+    height: 100%;
+    justify-items: center;
+}
+
+.pin-header{
+    width: 100%;
+    height: 4rem;
+    border: 1px solid grey;
+}
+.pin-info{
+    display: flex;
+    flex-direction: column;
+    margin: 0px 3rem;
+    justify-content: center;
+    align-content: center;
+}
+.pin-name{
+    font-size: 1.85rem;
+    font-weight: 500;
+    justify-self: center;
+    align-self: start;
+    margin: 10px;
+    padding: 0px;
+    margin: 15px 0px
+}
+.comment{
+    display: flex;
+}
+.pfp{
+   height: 2rem;
+   width: 2rem;
+   border-radius: 50%;
+}
+.pfp-in {
+    height: 3rem;
+    height: 3rem;
+}
+.pin-user{
+    display: flex;
+    align-items: center;
+}
+.nameAndFollowers{
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+    margin-right: 45%;
+}
+.pin-owner-name{
+    font-weight: 600;
+}

@@ -18,8 +18,8 @@ export const thunkGetAllPins = () => async (dispatch) => {
     return data;
 };
 
-export const thunkGetUserPins = (userId) => async (dispatch) => {
-    const response = await fetch(`/api/users/${userId}/pins`);
+export const thunkGetUserPins = () => async (dispatch) => {
+    const response = await fetch(`/api/pins/current`);
     const data = await response.json();
     if (response.ok) dispatch(getUserPins(data.Pins));
     return data;

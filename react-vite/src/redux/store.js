@@ -6,18 +6,17 @@ import {
 } from "redux";
 import thunk from "redux-thunk";
 
-import boardsReducer from '../actions/boards';
-import boardReducer from '../actions/board';
-import pinsReducer from '../actions/pins';
-import pinReducer from '../actions/pin';
 import sessionReducer from './session';
-
+import pinsReducer from "./pins";
+import pinReducer from "./pin";
+import boardsReducer from "./boards";
+import boardReducer from "./board";
 const rootReducer = combineReducers({
     session: sessionReducer,
-    boards: boardsReducer,
-    board: boardReducer,
     pins: pinsReducer,
     pin: pinReducer,
+    boards: boardsReducer,
+    board: boardReducer,
 });
 
 let enhancer;
