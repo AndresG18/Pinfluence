@@ -1,112 +1,228 @@
+/* PinDetails.css */
+
 .loading-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
 }
 
 .loading-spinner {
-    border: 4px solid rgba(0, 0, 0, 0.1);
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    border-left-color: #E60023;
-    animation: spin 1s ease infinite;
-    margin: 5px;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border-left-color: #E60023;
+  animation: spin 1s ease infinite;
+  margin: 5px;
 }
 
 .loading-text {
-    margin-top: 10px;
-    font-size: 16px;
-    color: #555;
+  margin-top: 10px;
+  font-size: 16px;
+  color: #555;
 }
 
 @keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .pin-box {
-    width: 80%;
-    height: fit-content;
-    display: flex;
-    align-items: center;
-    box-sizing: content-box;
-    margin: auto;
-    background-color: rgb(255, 255, 255);
-    box-shadow: 1px 1px 5px 1px rgb(101, 101, 101);
-    margin-top: 25px;
-    flex-direction: row;
-    border-radius: 1.5rem;
+  width: 80%;
+  min-height: 35rem;
+  display: flex;
+  align-items: center;
+  box-sizing: content-box;
+  margin: auto;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 1px 1px 5px 1px rgba(101, 101, 101, 0.257);
+  margin-top: 25px;
+  flex-direction: row;
+  border-radius: .3rem;
 }
 
 .pin-img-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 50%;
+  padding: 5px;
 }
 
 .pin-img {
-    width: 100%;
-    border-radius: 1.5rem;
+  width: 100%;
+  border-radius: 2rem;
 }
 
 .pin-inner-right {
-    display: flex;
-    flex-direction: column;
-    align-self: start;
-    width: 50%;
-    height: 100%;
-    justify-items: center;
+  display: flex;
+  flex-direction: column;
+  align-self: start;
+  width: 50%;
+  height: 100%;
+  justify-items: center;
+  box-sizing: border-box;
+  padding: 0px 2.5rem;
 }
 
-.pin-header{
-    width: 100%;
-    height: 4rem;
-    border: 1px solid grey;
+.pin-header {
+  width: 100%;
+  height: 4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-.pin-info{
-    display: flex;
-    flex-direction: column;
-    margin: 0px 3rem;
-    justify-content: center;
-    align-content: center;
+
+.back-button {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
 }
-.pin-name{
-    font-size: 1.85rem;
-    font-weight: 500;
-    justify-self: center;
-    align-self: start;
-    margin: 10px;
-    padding: 0px;
-    margin: 15px 0px
+
+.pin-action-buttons {
+  display: flex;
+  align-items: center;
 }
-.comment{
-    display: flex;
+
+.save-button {
+  background-color: #E60023;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
 }
-.pfp{
-   height: 2rem;
-   width: 2rem;
-   border-radius: 50%;
+
+.profile-menu {
+  position: relative;
 }
+
+.pin-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+}
+
+.pin-name {
+  font-size: 1.85rem;
+  font-weight: 500;
+  justify-self: center;
+  align-self: start;
+  margin: 10px;
+  padding: 0px;
+  margin: 15px 0px;
+}
+
+.pin-description {
+  font-size: 1.2rem;
+  margin: 10px 0;
+}
+
+.pin-user {
+  display: flex;
+  align-items: center;
+}
+
+.nameAndFollowers {
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+}
+
+.pin-owner-name {
+  font-weight: 600;
+}
+
+.pin-comments {
+  display: flex;
+  flex-direction: column;
+  margin: 5px 0px;
+  gap: 15px;
+}
+
+.comment {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.pfp {
+  height: 2.2rem;
+  width: 2.2rem;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
 .pfp-in {
-    height: 3rem;
-    height: 3rem;
+  height: 3rem;
+  width: 3rem;
+  border-radius: 50%;
 }
-.pin-user{
-    display: flex;
-    align-items: center;
+
+.comment-form {
+  justify-self: flex-end;
+  display: flex;
+  align-items: center;
+  position: sticky;
 }
-.nameAndFollowers{
-    display: flex;
-    flex-direction: column;
-    margin: 20px;
-    margin-right: 45%;
+
+.comment-input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  height: 1.5rem;
+  margin-bottom: 10px;
 }
-.pin-owner-name{
-    font-weight: 600;
+
+.comment-input:focus {
+  outline: none;
+  border-radius: 25px;
+  height: 1.5rem;
+}
+
+.comment-submit-button {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #E60023;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.comment-text {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.pin-action-buttons{
+  gap:10px
+}
+.save-button:hover{
+  color: black;
+  background-color: rgb(255, 251, 251);
+  box-shadow: 1px 1px 5px 1px;
+}
+.edit-button{
+  color:white;
+  background-color: black;
+}
+.edit-button:hover{
+  color: black;
+  background-color: rgb(255, 251, 251);
+  box-shadow: 1px 1px 5px 1px;
+}
+.trash:hover{
+  color:  #E60023;
+  cursor: pointer;
 }

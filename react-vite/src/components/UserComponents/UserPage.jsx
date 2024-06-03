@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { thunkGetUserPins } from "../../redux/pins";
+import { thunkGetUser } from "../../redux/session";
 import "./UserPage.css";
 
 export default function UserPage() {
@@ -12,8 +13,9 @@ export default function UserPage() {
   const savedPins = useSelector(state => state.pins.allPins); // Assuming you have a saved pins state
   const [loaded, setLoaded] = useState(false);
   const [activeTab, setActiveTab] = useState('created');
-
+  const [currUser , setCurrUser]= useState('')
   useEffect(() => {
+    thunkGetUser(userId).then((data) => setCurrUser(data))
     dispatch(thunkGetUserPins(userId)).then(() => setLoaded(true));
     // Add another thunk to fetch saved pins if you have one
   }, [dispatch, userId]);
@@ -27,7 +29,7 @@ export default function UserPage() {
       {loaded ? (
         <>
           <div className="user-info">
-            <img src={user.profile_image} alt={`${user.username}'s profile`} className="profile-image" />
+            <img src={currUser.profile_image} alt={`${currUser.username}'s profile`} className="profile-image" />
             <h2>{user.username}</h2>
             <p>{user.about}</p>
           </div>
@@ -53,7 +55,7 @@ export default function UserPage() {
                   <div className="pin-title">{pin.title}</div>
                 </div>
               ))
-            ) : activeTab === 'saved' && savedPins.length > 0 ? (
+            ) : activeTab === 'saved' && my.length > 0 ? (
               savedPins.map(pin => (
                 <div key={pin.id} className="pin">
                   <img src={pin.content_url} alt={pin.title} className="pin-image" />

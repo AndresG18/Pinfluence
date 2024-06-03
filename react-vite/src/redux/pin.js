@@ -84,7 +84,7 @@ export const thunkDeleteComment = (pinId, commentId) => async (dispatch) => {
     return data;
 };
 
-export const thunkToggleLikePin = (pinId) => async (dispatch) => {
+export const thunkToggleLike = (pinId) => async (dispatch) => {
     const response = await fetch(`/api/pins/${pinId}/like`, {
         method: 'POST'
     });

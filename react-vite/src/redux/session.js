@@ -13,6 +13,7 @@ const updateUser = (user) => ({
   payload: user
 });
 
+
 const removeUser = () => ({
   type: REMOVE_USER
 });
@@ -96,7 +97,6 @@ export const thunkToggleFollow = (userId) => async (dispatch) => {
     method: "POST"
   });
   const data = await response.json();
-  if (response.ok) dispatch(toggleFollow(data.user));
   return data;
 };
 
@@ -110,8 +110,6 @@ function sessionReducer(state = initialState, action) {
       return { ...state, user: action.payload };
     case REMOVE_USER:
       return { ...state, user: null };
-    case TOGGLE_FOLLOW:
-      return { ...state, user: action.payload };
     default:
       return state;
   }

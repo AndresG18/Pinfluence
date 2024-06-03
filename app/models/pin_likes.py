@@ -12,3 +12,9 @@ class PinLike(db.Model):
 
     user = db.relationship('User', back_populates='pin_likes')
     pin = db.relationship('Pin', back_populates='likes')
+    
+    def to_dict(self):
+        return{
+            'user_id':self.user_id,
+            'pin_id':self.pin_id
+        }
