@@ -1,27 +1,45 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { thunkGetUserPins } from "../../redux/pins";
+import { useParams, useNavigate } from "react-router-dom";
+import { thunkGetUserPins, thunkGetAllPins } from "../../redux/pins";
 import { thunkGetUser } from "../../redux/session";
+import BoardList from "../BoardComponents/BoardList";
 import "./UserPage.css";
 
 export default function UserPage() {
   const { userId } = useParams();
   const dispatch = useDispatch();
-  const user = useSelector(state => state.session.user);
-  const createdPins = useSelector(state => state.pins.myPins);
-  const savedPins = useSelector(state => state.pins.allPins); 
-  const [loaded, setLoaded] = useState(false);
-  const [activeTab, setActiveTab] = useState('created');
-  const [currUser , setCurrUser]= useState('')
-  useEffect(() => {
-    thunkGetUser(userId).then((data) => setCurrUser(data))
-    dispatch(thunkGetUserPins(userId)).then(() => setLoaded(true));
+  const navigate = useNavigate(); // Use useNavigate hook
+  const user = useSelector((state) => state.session.user);
+  const createdPins = useSelector((state) => state.pins.myPins);
+  const allPins = useSelector((state) => state.pins.allPins);
 
+  const [savedPins, setSavedPins] = useState([]); 
+  const [boards, setBoards] = useState([]); // Add state for boards
+  const [loaded, setLoaded] = useState(false);
+  const [activeTab, setActiveTab] = useState("created");
+  const [currUser, setCurrUser] = useState("");
+  
+  useEffect(() => {
+    thunkGetUser(userId).then((data) => {
+      dispatch(thunkGetUserPins(userId));
+      dispatch(thunkGetAllPins());
+      setCurrUser(data);
+      setSavedPins(data.saved);
+      setBoards(data.boards); // Set boards data
+    }).then(() => setLoaded(true));
   }, [dispatch, userId]);
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
+  };
+
+  const handlePinClick = (pinId) => {
+    navigate(`/pins/${pinId}`);
+  };
+
+  const handleCreateBoard = () => {
+    navigate(`/boards/new`);
   };
 
   return (
@@ -29,39 +47,45 @@ export default function UserPage() {
       {loaded ? (
         <>
           <div className="user-info">
-            <img src={currUser.profile_image} alt={`${currUser.username}'s profile`} className="profile-image" />
-            <h2>{user.username}</h2>
-            <p>{user.about}</p>
+            <img
+              src={currUser.profile_image}
+              alt={`${currUser.username}'s profile`}
+              className="profile-image"
+            />
+            <h2>{currUser.username}</h2>
+            <p>{currUser.about}</p>
           </div>
           <div className="tabs">
             <button
-              className={`tab ${activeTab === 'created' ? 'active' : ''}`}
-              onClick={() => handleTabChange('created')}
+              className={`tab ${activeTab === "created" ? "active" : ""}`}
+              onClick={() => handleTabChange("created")}
             >
               Created
             </button>
             <button
-              className={`tab ${activeTab === 'saved' ? 'active' : ''}`}
-              onClick={() => handleTabChange('saved')}
+              className={`tab ${activeTab === "saved" ? "active" : ""}`}
+              onClick={() => handleTabChange("saved")}
             >
               Saved
             </button>
           </div>
+          {activeTab === "saved" && (
+            <button className="create-board-button" onClick={handleCreateBoard}>
+              +
+            </button>
+          )}
           <div className="pin-container">
-            {activeTab === 'created' && createdPins.length > 0 ? (
-              createdPins.map(pin => (
-                <div key={pin.id} className="pin">
+            {activeTab === "created" && createdPins.length > 0 ? (
+              createdPins.map((pin) => (
+                <div key={pin.id} className="pin" onClick={() => handlePinClick(pin.id)}>
                   <img src={pin.content_url} alt={pin.title} className="pin-image" />
                   <div className="pin-title">{pin.title}</div>
                 </div>
               ))
-            ) : activeTab === 'saved' && my.length > 0 ? (
-              savedPins.map(pin => (
-                <div key={pin.id} className="pin">
-                  <img src={pin.content_url} alt={pin.title} className="pin-image" />
-                  <div className="pin-title">{pin.title}</div>
-                </div>
-              ))
+            ) : activeTab === "saved" ? (
+              <>
+                <BoardList boards={boards} pins={allPins} /> {/* Add BoardList component */}
+              </>
             ) : (
               <div className="loading">No Pins Found</div>
             )}

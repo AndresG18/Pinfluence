@@ -1,26 +1,41 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDropzone } from 'react-dropzone';
 import { thunkCreatePin } from '../../redux/pin';
+import { thunkAddPinToBoard } from '../../redux/board';
+import { thunkGetUserBoards } from '../../redux/boards';
 import { FaTrash } from 'react-icons/fa';
 import './PinForm.css';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const PinForm = () => {
   const dispatch = useDispatch();
   const user = useSelector(state => state.session.user);
   const boards = useSelector(state => state.boards.myBoards);
-
+  const navigate = useNavigate()
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [link, setLink] = useState('');
-  const [boardId, setBoardId] = useState('');
+  const [selectedBoard, setSelectedBoard] = useState('');
   const [media, setMedia] = useState(null);
   const [errors, setErrors] = useState({});
+  const [fileError, setFileError] = useState('');
+  const [loaded, setLoaded] = useState(false);
 
-  const onDrop = (acceptedFiles) => {
+  useEffect(() => {
+    if (user) {
+      dispatch(thunkGetUserBoards()).then(() => setLoaded(true));
+    }
+  }, [dispatch, user, setLoaded]);
+
+  const onDrop = (acceptedFiles, rejectedFiles) => {
     const file = acceptedFiles[0];
     if (file) {
       setMedia(file);
+      setFileError('');
+    }
+    if (rejectedFiles.length > 0) {
+      setFileError('File is too large. Max size is 7MB.');
     }
   };
 
@@ -36,15 +51,40 @@ const PinForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrors({});
+    setFileError('');
+
+    const validationErrors = {};
+    if (title.length < 3) {
+      validationErrors.title = 'Title must be at least 3 characters.';
+    }
+    if (description.length < 3) {
+      validationErrors.description = 'Description must be at least 3 characters.';
+    }
+    if (!media) {
+      validationErrors.media = 'Please upload an image or video.';
+    }
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
     const formData = new FormData();
     formData.append('title', title);
     formData.append('description', description);
     formData.append('link', link);
-    formData.append('board_id', boardId);
     formData.append('content_url', media);
 
     const response = await dispatch(thunkCreatePin(formData));
-    if (response.errors) setErrors(response.errors);
+    if (response.errors) {
+      setErrors(response.errors);
+    } else {
+      if (selectedBoard) {
+        await dispatch(thunkAddPinToBoard(selectedBoard, response.id));
+        navigate(`/pins/${response.id}`)
+      }
+    }
   };
 
   return (
@@ -76,6 +116,8 @@ const PinForm = () => {
               )}
             </div>
           )}
+          {errors.media && <div className="error-messages">{errors.media}</div>}
+          {fileError && <div className="error-messages">{fileError}</div>}
         </div>
         <div className="pin-details">
           <div className="form-group">
@@ -87,6 +129,7 @@ const PinForm = () => {
               onChange={(e) => setTitle(e.target.value)} 
               required 
             />
+            {errors.title && <div className="error-messages">{errors.title}</div>}
           </div>
           <div className="form-group">
             <label htmlFor="description">Description</label>
@@ -96,9 +139,10 @@ const PinForm = () => {
               onChange={(e) => setDescription(e.target.value)} 
               required 
             />
+            {errors.description && <div className="error-messages">{errors.description}</div>}
           </div>
           <div className="form-group">
-            <label htmlFor="link">Destination Link</label>
+            <label htmlFor="link">Link (optional)</label>
             <input 
               id="link" 
               type="text" 
@@ -107,24 +151,23 @@ const PinForm = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="boardId">Board</label>
+            <label htmlFor="boardId">Save to a Board (optional)</label>
             <select 
               id="boardId" 
-              value={boardId} 
-              onChange={(e) => setBoardId(e.target.value)} 
-              required 
+              value={selectedBoard} 
+              onChange={(e) => setSelectedBoard(e.target.value)} 
             >
               <option value="" disabled>Select Board</option>
-              {boards.map(board => (
+              {loaded && boards.map(board => (
                 <option key={board.id} value={board.id}>{board.name}</option>
               ))}
             </select>
           </div>
         </div>
       </form>
-      {errors.length > 0 && (
+      {Object.keys(errors).length > 0 && (
         <div className="error-messages">
-          {errors.map((error, idx) => (
+          {Object.values(errors).map((error, idx) => (
             <p key={idx}>{error}</p>
           ))}
         </div>

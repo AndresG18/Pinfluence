@@ -1,0 +1,163 @@
+.user-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.profile-image {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  margin-right: 20px;
+}
+
+.tabs {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.tab {
+  padding: 10px 20px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 16px;
+  margin-right: 10px;
+  border-bottom: 2px solid transparent;
+  transition: border-bottom 0.3s ease;
+}
+
+.tab.active {
+  border-bottom: 2px solid #e60023;
+}
+
+.pin-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.pin {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.pin:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.pin-image {
+  width: 100%;
+  display: block;
+}
+
+.pin-title {
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.loading {
+  text-align: center;
+  font-size: 18px;
+  padding: 20px;
+}
+
+.board-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.board {
+    background: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .board:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  .board-preview {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+  }
+  
+  .board-preview img.single-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .board-preview .collage {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .board-preview .collage-image {
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+  }
+  
+  .board-preview .collage-image-1 {
+    top: 0;
+    left: 0;
+  }
+  
+  .board-preview .collage-image-2 {
+    top: 0;
+    right: 0;
+  }
+  
+  .board-preview .collage-image-3 {
+    bottom: 0;
+    left: 0;
+  }
+  
+  .board h4 {
+    padding: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .board p {
+    padding: 0 10px 10px;
+    font-size: 14px;
+    text-align: center;
+    color: #555;
+  }
+  
+  .board-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+  }
+  
+  .loading {
+    text-align: center;
+    font-size: 18px;
+    padding: 20px;
+  }
+  

@@ -19,11 +19,13 @@ export const thunkGetAllBoards = () => async (dispatch) => {
 };
 
 export const thunkGetUserBoards = (userId) => async (dispatch) => {
-    const response = await fetch(`/api/users/${userId}/boards`);
+    const response = await fetch(`/api/boards/current`);
+    
+    const data = await response.json();
     if (response.ok) {
-        const data = await response.json();
         dispatch(getUserBoards(data.Boards));
     }
+    return data 
 };
 
 const initialState = {
