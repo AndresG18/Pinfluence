@@ -9,15 +9,15 @@ export default function UserPage() {
   const { userId } = useParams();
   const dispatch = useDispatch();
   const user = useSelector(state => state.session.user);
-  const createdPins = useSelector(state => state.pins.myPins); // Assuming this fetches pins created by the user
-  const savedPins = useSelector(state => state.pins.allPins); // Assuming you have a saved pins state
+  const createdPins = useSelector(state => state.pins.myPins);
+  const savedPins = useSelector(state => state.pins.allPins); 
   const [loaded, setLoaded] = useState(false);
   const [activeTab, setActiveTab] = useState('created');
   const [currUser , setCurrUser]= useState('')
   useEffect(() => {
     thunkGetUser(userId).then((data) => setCurrUser(data))
     dispatch(thunkGetUserPins(userId)).then(() => setLoaded(true));
-    // Add another thunk to fetch saved pins if you have one
+
   }, [dispatch, userId]);
 
   const handleTabChange = (tab) => {
