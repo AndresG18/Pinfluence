@@ -3,7 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { thunkGetPin, thunkCreateComment, thunkDeleteComment, thunkToggleSave, thunkDeletePin } from "../../redux/pin";
 import { thunkGetUser, thunkToggleFollow } from "../../redux/session";
-import { FaPinterest, FaArrowRight, FaTrash, FaSave, FaEdit } from 'react-icons/fa';
+import { FaPinterest, FaArrowRight, FaTrash, FaSave, FaEdit, FaPlus } from 'react-icons/fa';
+import { thunkGetUserBoards } from "../../redux/boards";
+import {thunkAddPinToBoard } from '../../redux/board'
 import './PinDetails.css';
 
 export default function PinDetails() {
@@ -13,11 +15,13 @@ export default function PinDetails() {
   const [comment, setComment] = useState('');
   const [comments, setComments] = useState([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
   const { pinId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const pin = useSelector(state => state.pin.pin);
   const user = useSelector(state => state.session.user);
+  const userBoards = useSelector(state => state.boards.myBoards);
   const [following, setFollowing] = useState('');
   const [saved, setSaved] = useState('');
 
@@ -30,6 +34,7 @@ export default function PinDetails() {
         setFollowing(data?.followers.includes(user.id))
       }).then(() => setLoaded(true));
     });
+    dispatch(thunkGetUserBoards(user.id));
   }, [dispatch, pinId, following, saved]);
 
   const getUsers = (comments) => {
@@ -69,7 +74,6 @@ export default function PinDetails() {
 
   const handleSaveClick = () => {
     alert('Profile feature coming soon!');
-    // dispatch(thunkToggleSave(pin.id))
     setSaved(prev => !prev)
   };
 
@@ -96,31 +100,48 @@ export default function PinDetails() {
     setShowDeleteModal(false);
   };
 
+  const handleAddToBoard = (boardId) => {
+    dispatch(thunkAddPinToBoard(boardId, pinId)).then(() => {
+      setShowDropdown(false);
+      window.alert('added to board successfully')
+    });
+  };
+
   return loaded ? (
     <div className="pin-box">
       <div className="pin-img-container">
         <img className="pin-img" src={pin?.content_url} alt={pin?.title} />
       </div>
       <div className="pin-inner-right">
-            {showDeleteModal && (
-              <div className="modal">
-                <div className="modal-content">
-                  <h2>Are you sure you want to delete this pin?</h2>
-                  <button className="login" onClick={confirmDelete}>Yes, delete</button>
-                  <button className="signup" onClick={cancelDelete}>No, cancel</button>
-                </div>
-              </div>
-            )}
+        {showDeleteModal && (
+          <div className="modal">
+            <div className="modal-content">
+              <h2>Are you sure you want to delete this pin?</h2>
+              <button className="login" onClick={confirmDelete}>Yes, delete</button>
+              <button className="signup" onClick={cancelDelete}>No, cancel</button>
+            </div>
+          </div>
+        )}
         <div className="pin-header">
           <button onClick={() => window.history.back()} className="back-button">← Back</button>
           <div className="pin-action-buttons">
             {user && user.id === pinOwner?.id && (
               <>
-                <button className="signup" style={{ marginRight: '5rem', cursor: 'pointer' }} onClick={handleDeleteClick}><FaTrash /> Delete</button>
+                <button className="signup" style={{ marginRight: '.1rem', cursor: 'pointer' }} onClick={handleDeleteClick}><FaTrash /> Delete</button>
                 <button className="save-button edit-button" type="edit" onClick={handleEditClick}> <FaEdit /> Edit</button>
               </>
             )}
             <button className="save-button" style={saved ? { backgroundColor: ' #E60023' } : { backgroundColor: 'black' }} onClick={handleSaveClick}> <FaSave /> {saved ? 'Save' : 'Saved'}</button>
+            <button className="login"  style={{fontSize:'1rem',padding:'9px'}} onClick={() => setShowDropdown(prev => !prev)}><FaPlus /> Add to Board</button>
+            {showDropdown && (
+              <div className="dropdown">
+                {userBoards.map(board => (
+                  <div key={board.id} onClick={() => handleAddToBoard(board.id)} className="dropdown-item">
+                    {board.name}
+                  </div>
+                ))}
+              </div>
+            )}
             <div className="profile-menu">
               {/* <button className="profile-button" onClick={handleProfileClick}>Profile</button> */}
             </div>

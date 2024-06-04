@@ -226,3 +226,29 @@
   color:  #E60023;
   cursor: pointer;
 }
+.dropdown {
+  position:absolute;
+  display: flex;
+
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  padding: 10px;
+  top: 50px;
+  right: 100px;
+  z-index: 1000;
+}
+
+.dropdown-item {
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background: #eee;
+}
+
+/* x-direction: column;.pin-header .pin-action-buttons{
+  display: flex;
+  fle
+} */

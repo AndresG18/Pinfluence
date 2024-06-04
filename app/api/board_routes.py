@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from app.models import db, Board,Pin,User
+from app.models import db, Board,Pin,User,pin_board
 from flask_login import login_required, current_user
 from app.forms import BoardForm
 
@@ -98,7 +98,11 @@ def add_pin_to_board(board_id, pin_id):
         return {"message": "Board or Pin not found"}, 404
     is_auth = authorize(board.user_id)
     if is_auth: return is_auth
-    board.pins.append(pin)
+    
+    # Ensure user_id is included
+    statement = pin_board.insert().values(board_id=board_id, pin_id=pin_id, user_id=current_user.id)
+    db.session.execute(statement)
+    
     db.session.commit()
     return {"message": "Pin added to board"}, 200
 # Add a pin to a board

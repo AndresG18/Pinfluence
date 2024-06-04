@@ -83,7 +83,7 @@ export const thunkAddPinToBoard = (boardId, pinId) => async (dispatch) => {
 };
 
 export const thunkRemovePinFromBoard = (boardId, pinId) => async (dispatch) => {
-    const response = await fetch(`/api/boards/${boardId}/pins/${pinId}/delete`, {
+    const response = await fetch(`/api/boards/${boardId}/pins/${pinId}`, {
         method: 'DELETE'
     });
     const data = await response.json();
