@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from app.models import db, User,Pin,PinComment,PinLike
+from app.models import db, User,Pin,PinComment,PinLike,pin_board
 from flask_login import login_user,login_required,current_user
 from app.forms import PinForm, PinCommentForm
 from .AWS import upload_file_to_s3, get_unique_filename,remove_file_from_s3
@@ -56,24 +56,35 @@ def create_pin():
 @login_required
 def edit_pin(pin_id):
     pin = Pin.query.get(pin_id)
-    if not pin : return {"message": "Pin not found"}, 404
+    if not pin:
+        return {"message": "Pin not found"}, 404
+
     is_auth = authorize(pin.user_id)
-    if is_auth : return is_auth
+    if is_auth:
+        return is_auth
+
     form = PinForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         old_image = pin.content_url
-        new_image = form.data['content_url']
-        new_image.filename = get_unique_filename(new_image.filename)
-        upload = upload_file_to_s3(new_image)
-        pin.title = form.data['title']
-        pin.content_url = upload['url']
-        pin.description = form.data['description']
-        pin.link = form.data['link']
-        if old_image: remove_file_from_s3(old_image)
-        return pin.to_dict(),201
-    return {"errors":form.errors},400
-    
+        new_image = form.content_url.data
+        if new_image:
+            new_image.filename = get_unique_filename(new_image.filename)
+            upload = upload_file_to_s3(new_image)
+            if 'url' in upload:
+                pin.content_url = upload['url']
+                if old_image:
+                    remove_file_from_s3(old_image)
+            else:
+                return {"errors": [upload]}, 400
+
+        pin.title = form.title.data
+        pin.description = form.description.data
+        pin.link = form.link.data or pin.link  
+        db.session.commit()
+        return pin.to_dict(), 201
+
+    return {"errors": form.errors}, 400
 # Edit pin by id
 
 @pin_routes.route('/<int:pin_id>/delete', methods=['DELETE'])
@@ -176,3 +187,34 @@ def toggle_like(pin_id):
     db.session.commit()
     return {"message": message}, 200
 # Toggle like/unlike a pin
+
+@pin_routes.route('/saved', methods=['GET'])
+@login_required
+def get_saved_pins():
+    user = current_user
+    saved_pins = user.get_saved()
+    return {'pins': saved_pins}
+
+@pin_routes.route('/<int:pin_id>/toggle-save', methods=['POST'])
+@login_required
+def toggle_save_pin_to_null_board(pin_id):
+    pin = Pin.query.get(pin_id)
+    if not pin:
+        return {"message": "Pin not found"}, 404
+
+    user = User.query.get(current_user.id)
+
+    existing_entry = db.session.query(pin_board).filter_by(pin_id=pin_id, user_id=user.id, board_id=None).first()
+
+    if existing_entry:
+        db.session.execute(pin_board.delete().where(
+            (pin_board.c.pin_id == pin_id) & 
+            (pin_board.c.user_id == user.id) & 
+            (pin_board.c.board_id == None)
+        ))
+        db.session.commit()
+        return {"message": "Pin removed from saved pins"}, 200
+    else:
+        db.session.execute(pin_board.insert().values(pin_id=pin_id, user_id=user.id, board_id=None))
+        db.session.commit()
+        return {"message": "Pin saved to saved pins"}, 201

@@ -19,7 +19,7 @@
     color: #555;
   }
   
-  .pin-container {
+  /* .pin-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 20px;
@@ -54,6 +54,54 @@
   .loading {
     text-align: center;
     font-size: 18px;
-    padding: 20px;
-  }
+    padding: 20px; */
+    .board-form-container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.449);
+      margin-top: 20px;
+      border-radius: 1.5rem;
+      height: 28rem;
+      display: flex;
+      flex-direction: column;
+    justify-content: center;  
+    }
+    
+    .board-form-container h2 {
+      text-align: center;
+      margin-bottom: 40px;
+      color: #333;
+    }
+    
+    .board-form {
+      display: flex;
+      flex-direction: column;
+    }
+    .form-group textarea{
+      max-height: 11rem;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #333;
+    }
+    
+    .error {
+      margin-top: 5px;
+      color: #e60023;
+      font-size: 14px;
+    }
+
   
+    
+   
+    

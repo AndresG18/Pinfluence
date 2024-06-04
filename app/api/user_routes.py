@@ -1,6 +1,6 @@
 from flask import Blueprint, request
 from flask_login import login_required,current_user
-from app.models import db, User, UserFollow
+from app.models import db, User, UserFollow,Pin
 from app.forms import EditProfileForm
 from .AWS import get_unique_filename,upload_file_to_s3,remove_file_from_s3
 user_routes = Blueprint('users', __name__)
@@ -27,11 +27,14 @@ def user(id):
 
     followers = UserFollow.query.filter_by(followed_id=id).all()
     following = UserFollow.query.filter_by(follower_id=id).all()
-
+    pins = user.saved_pins
+    boards = user.boards
     return {
         **user.to_dict(),
         "followers": [follower.follower_id for follower in followers],
-        "following": [follow.followed_id for follow in following]
+        "following": [follow.followed_id for follow in following],
+        'saved':[pin.to_dict() for pin in pins],
+        "boards":[board.to_dict() for board in boards]
     }
 
 @user_routes.route('/<int:id>/edit>',methods=['PUT'])

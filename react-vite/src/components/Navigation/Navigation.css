@@ -13,6 +13,8 @@
   padding:8px 15px;
   background-color: #fff;
   justify-content: space-evenly;
+  position: sticky;
+  z-index: 671;
 }
 
 

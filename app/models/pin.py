@@ -21,7 +21,7 @@ class Pin(db.Model):
     boards = db.relationship('Board', secondary=pin_board, back_populates='pins')
     likes = db.relationship('PinLike', back_populates='pin', cascade="all, delete-orphan")
     comments = db.relationship('PinComment', back_populates='pin', cascade="all, delete-orphan")
-
+    users_saved = db.relationship('User', secondary=pin_board, back_populates='saved_pins')
     def get_likes(self):
         return [like.to_dict() for like in self.likes]
     

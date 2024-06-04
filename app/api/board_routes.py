@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from app.models import db, Board,Pin
+from app.models import db, Board,Pin,User
 from flask_login import login_required, current_user
 from app.forms import BoardForm
 
@@ -21,6 +21,12 @@ def board(board_id):
     if not board: return {"message": "Board not found"}, 404
     return {"pins":board.get_pins(),**board.to_dict()}
 # Get a board by id
+
+@board_routes.route('/current', methods=['GET'])
+@login_required
+def get_current_user_boards():
+    boards = Board.query.filter(Board.user_id == current_user.id).all()
+    return {"Boards": [board.to_dict() for board in boards]}
 
 @board_routes.route('/new', methods=['POST'])
 @login_required

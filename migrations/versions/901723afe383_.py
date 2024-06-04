@@ -81,11 +81,13 @@ def upgrade():
     sa.PrimaryKeyConstraint('user_id', 'board_id')
     )
     op.create_table('board_pins',
-    sa.Column('board_id', sa.Integer(), nullable=False),
+    sa.Column('board_id', sa.Integer(), nullable=True),
     sa.Column('pin_id', sa.Integer(), nullable=False),
+    sa.Column('user_id',sa.Integer(),nullable=False),
     sa.ForeignKeyConstraint(['board_id'], ['boards.id'], ),
     sa.ForeignKeyConstraint(['pin_id'], ['pins.id'], ),
-    sa.PrimaryKeyConstraint('board_id', 'pin_id')
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
+    sa.PrimaryKeyConstraint('board_id', 'pin_id','user_id')
     )
     op.create_table('pin_comments',
     sa.Column('id', sa.Integer(), nullable=False),

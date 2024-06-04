@@ -43,9 +43,9 @@ const BoardForm = ({ isEditing }) => {
   };
 
   return (
-    <div className="board-form-container">
+    <div  className="board-form-container">
       <h2>{isEditing ? 'Edit Board' : 'Create Board'}</h2>
-      <form onSubmit={handleSubmit}>
+      <form  className='board-form' onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="name">Name</label>
           <input 
@@ -66,7 +66,7 @@ const BoardForm = ({ isEditing }) => {
           />
           {errors.description && <div className="error">{errors.description}</div>}
         </div>
-        <button type="submit">{isEditing ? 'Update' : 'Create'}</button>
+        <button className='login' style={{width:'20%',alignSelf:'flex-end'}} type="submit">{isEditing ? 'Update' : 'Create'}</button>
       </form>
     </div>
   );

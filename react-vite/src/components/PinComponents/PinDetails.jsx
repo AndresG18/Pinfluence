@@ -73,6 +73,7 @@ export default function PinDetails() {
   const handleProfileClick = () => {
     alert('Profile feature coming soon!');
   };
+  console.log(pinOwner)
 
   const handleEditClick = () => {
    navigate(`/pins/${pinId}/edit`)
@@ -116,6 +117,7 @@ export default function PinDetails() {
           <h3>Comments ({comments.length})</h3>
           {comments.length > 0 ? comments.map((comment) => {
             const commentUser = commentors.find(ele => ele.id === comment.user_id);
+            console.log(commentUser)
             return (
               <div key={comment.id} className="comment">
                 <img className="pfp"  onClick={()=> navigate(`/users/${comment.user_id}`)} src={commentUser?.profile_image} alt={commentUser?.name} />

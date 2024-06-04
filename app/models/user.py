@@ -1,6 +1,7 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+from .pin_board import pin_board
 from datetime import datetime
 
 class User(db.Model, UserMixin):
@@ -25,6 +26,7 @@ class User(db.Model, UserMixin):
     pin_comments = db.relationship('PinComment', back_populates='user', cascade="all, delete-orphan")
     messages_sent = db.relationship('Message', foreign_keys='Message.sender_id', back_populates='sender', cascade="all, delete-orphan")
     messages_received = db.relationship('Message', foreign_keys='Message.recipient_id', back_populates='recipient', cascade="all, delete-orphan")
+    saved_pins = db.relationship('Pin', secondary=pin_board, back_populates='users_saved')
 
     @property
     def password(self):
@@ -33,6 +35,9 @@ class User(db.Model, UserMixin):
     @password.setter
     def password(self, password):
         self.hashed_password = generate_password_hash(password)
+        
+    def get_saved(self):
+        return [ {"user_id":pin.user_id,"pin_id":pin.id ,} for pin in self.saved_pins]
 
     def check_password(self, password):
         print(password,self.password)

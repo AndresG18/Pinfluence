@@ -48,12 +48,17 @@ export default function UserPage() {
         <>
           <div className="user-info">
             <img
+            style={{height:'7rem',width:'7rem'}}
               src={currUser.profile_image}
               alt={`${currUser.username}'s profile`}
               className="profile-image"
             />
-            <h2>{currUser.username}</h2>
-            <p>{currUser.about}</p>
+            <h2 className="profile-name">{currUser.username}</h2>
+            <p >{currUser.about}</p>
+            <div className="following">
+              <span>{currUser?.followers?.length} Followers</span> •
+              <span>{currUser?.following?.length} Following</span>
+            </div>
           </div>
           <div className="tabs">
             <button
@@ -71,7 +76,7 @@ export default function UserPage() {
           </div>
           {activeTab === "saved" && (
             <button className="create-board-button" onClick={handleCreateBoard}>
-              +
+              Add Board +
             </button>
           )}
           <div className="pin-container">
