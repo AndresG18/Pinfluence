@@ -1,6 +1,11 @@
-
+.explore-page {
+    display: flex;
+    justify-content: center;
+    /* padding: 20px; */
+  }
 .no-following {
     text-align: center;
     font-size: 1.5rem;
     color: #333;
 }
+

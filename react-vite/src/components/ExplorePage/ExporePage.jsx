@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { thunkGetUser } from '../../redux/session';
 import { FaPinterest } from 'react-icons/fa';
-import '../HomePage/HomePage.css'
+import './ExplorePage.css'
 export default function ExplorePage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
