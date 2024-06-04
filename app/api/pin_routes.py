@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from app.models import db, User,Pin,PinComment,PinLike,pin_board
+from app.models import db, User,Pin,PinComment,PinLike,pin_board, UserFollow
 from flask_login import login_user,login_required,current_user
 from app.forms import PinForm, PinCommentForm
 from .AWS import upload_file_to_s3, get_unique_filename,remove_file_from_s3
@@ -91,13 +91,23 @@ def edit_pin(pin_id):
 @login_required
 def delete_pin(pin_id):
     pin = Pin.query.get(pin_id)
-    if not pin: return {"message": "Pin not found"}, 404
+    if not pin:
+        return {"message": "Pin not found"}, 404
+
     is_auth = authorize(pin.user_id)
-    if is_auth: return is_auth
+    if is_auth:
+        return is_auth
+
+    # Manually delete related entries in the board_pins table
+    db.session.execute(pin_board.delete().where(pin_board.c.pin_id == pin_id))
+
     old_image = pin.content_url
     db.session.delete(pin)
     db.session.commit()
-    if old_image: remove_file_from_s3(old_image)
+
+    if old_image:
+        remove_file_from_s3(old_image)
+
     return {"message": "Pin successfully deleted"}, 200
 # Delete pin by id
 
@@ -218,3 +228,4 @@ def toggle_save_pin_to_null_board(pin_id):
         db.session.execute(pin_board.insert().values(pin_id=pin_id, user_id=user.id, board_id=None))
         db.session.commit()
         return {"message": "Pin saved to saved pins"}, 201
+    

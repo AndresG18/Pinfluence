@@ -9,13 +9,13 @@ import "./UserPage.css";
 export default function UserPage() {
   const { userId } = useParams();
   const dispatch = useDispatch();
-  const navigate = useNavigate(); // Use useNavigate hook
+  const navigate = useNavigate(); 
   const user = useSelector((state) => state.session.user);
   const createdPins = useSelector((state) => state.pins.myPins);
   const allPins = useSelector((state) => state.pins.allPins);
 
   const [savedPins, setSavedPins] = useState([]); 
-  const [boards, setBoards] = useState([]); // Add state for boards
+  const [boards, setBoards] = useState([]); 
   const [loaded, setLoaded] = useState(false);
   const [activeTab, setActiveTab] = useState("created");
   const [currUser, setCurrUser] = useState("");
@@ -26,7 +26,7 @@ export default function UserPage() {
       dispatch(thunkGetAllPins());
       setCurrUser(data);
       setSavedPins(data.saved);
-      setBoards(data.boards); // Set boards data
+      setBoards(data.boards); 
     }).then(() => setLoaded(true));
   }, [dispatch, userId]);
 
@@ -89,7 +89,7 @@ export default function UserPage() {
               ))
             ) : activeTab === "saved" ? (
               <>
-                <BoardList boards={boards} pins={allPins} /> {/* Add BoardList component */}
+                <BoardList boards={boards} pins={allPins} />
               </>
             ) : (
               <div className="loading">No Pins Found</div>

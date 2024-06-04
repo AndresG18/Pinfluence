@@ -25,6 +25,16 @@ export const thunkGetUserPins = () => async (dispatch) => {
     return data;
 };
 
+export const thunkGetFollowingPins = () => async (dispatch) => {
+    const response = await fetch('/api/pins/following');
+    const data = await response.json();
+    if (response.ok) {
+        dispatch(getPins(data.pins));
+    }
+    return data;
+};
+
+
 const initialState = {
     allPins: [],
     myPins: []

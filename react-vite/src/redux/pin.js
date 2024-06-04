@@ -60,8 +60,9 @@ export const thunkDeletePin = (pinId) => async (dispatch) => {
     const response = await fetch(`/api/pins/${pinId}/delete`, {
         method: 'DELETE'
     });
+    const data = await response.json()
     if (response.ok) dispatch(deletePin());
-    return response.json();
+    return data;
 };
 
 export const thunkCreateComment = (pinId, comment) => async (dispatch) => {

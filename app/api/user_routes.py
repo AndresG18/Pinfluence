@@ -29,12 +29,14 @@ def user(id):
     following = UserFollow.query.filter_by(follower_id=id).all()
     pins = user.saved_pins
     boards = user.boards
+    pinz = user.pins
     return {
         **user.to_dict(),
         "followers": [follower.follower_id for follower in followers],
         "following": [follow.followed_id for follow in following],
         'saved':[pin.to_dict() for pin in pins],
-        "boards":[board.to_dict() for board in boards]
+        "boards":[board.to_dict() for board in boards],
+        "pins" : [pin.to_dict() for pin in pinz]
     }
 
 @user_routes.route('/<int:id>/edit>',methods=['PUT'])

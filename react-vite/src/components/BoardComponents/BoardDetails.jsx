@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
-import { thunkGetBoard } from '../../redux/board';
+import { thunkGetBoard ,thunkDeleteBoard} from '../../redux/board';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 import './BoardDetails.css';
 
 const BoardDetails = () => {
@@ -10,7 +11,7 @@ const BoardDetails = () => {
   const navigate = useNavigate();
   const board = useSelector((state) => state.board.board);
   const [loaded, setLoaded] = useState(false)
-
+  const user = useSelector(state => state.session.user)
   useEffect(() => {
     dispatch(thunkGetBoard(boardId)).then(()=>setLoaded(true))
   }, [dispatch, boardId]);
@@ -18,18 +19,29 @@ const BoardDetails = () => {
   const handleEditBoard = () => {
     navigate(`/boards/${boardId}/edit`);
   };
-
+  const handleDeleteClick = () => {
+    dispatch(thunkDeleteBoard(boardId)).then(() => {
+      navigate('/');
+    });
+  };
   return (
     <div className="board-details">
       {board && loaded ? (
         <>
           <div className="board-header">
             <h2>{board.name}</h2>
-            <button onClick={handleEditBoard} className="edit-board-button">
-              Edit
-            </button>
-          </div>
           <p>{board.description}</p>
+          {user && user.id === board.user_id && (
+            <>
+              <button className="login" onClick={handleEditBoard}>
+                <FaEdit /> Edit
+              </button>
+              <button className="signup" onClick={handleDeleteClick}>
+                <FaTrash /> Delete
+              </button>
+            </>
+          )}
+          </div>
           <div className="pin-container">
             {board.pins.length > 0 ? (
               board.pins.map((pin) => (

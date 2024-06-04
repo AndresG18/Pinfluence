@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { thunkGetPin, thunkCreateComment, thunkDeleteComment,thunkToggleSave } from "../../redux/pin";
+import { thunkGetPin, thunkCreateComment, thunkDeleteComment, thunkToggleSave, thunkDeletePin } from "../../redux/pin";
 import { thunkGetUser, thunkToggleFollow } from "../../redux/session";
-import { FaPinterest, FaArrowRight, FaTrash } from 'react-icons/fa';
+import { FaPinterest, FaArrowRight, FaTrash, FaSave, FaEdit } from 'react-icons/fa';
 import './PinDetails.css';
 
 export default function PinDetails() {
@@ -12,13 +12,14 @@ export default function PinDetails() {
   const [pinOwner, setPinOwner] = useState(null);
   const [comment, setComment] = useState('');
   const [comments, setComments] = useState([]);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { pinId } = useParams();
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const pin = useSelector(state => state.pin.pin);
   const user = useSelector(state => state.session.user);
-  const [following, setFollowing] = useState(pinOwner?.followers.includes(user.id));
-  const [saved,setSaved] = useState('')
+  const [following, setFollowing] = useState('');
+  const [saved, setSaved] = useState('');
 
   useEffect(() => {
     dispatch(thunkGetPin(pinId)).then((data) => {
@@ -26,9 +27,10 @@ export default function PinDetails() {
       getUsers(data.comments);
       thunkGetUser(data.user_id).then((data) => {
         setPinOwner(data);
+        setFollowing(data?.followers.includes(user.id))
       }).then(() => setLoaded(true));
     });
-  }, [dispatch, pinId, following,saved]);
+  }, [dispatch, pinId, following, saved]);
 
   const getUsers = (comments) => {
     if (comments && comments.length > 0) {
@@ -66,17 +68,32 @@ export default function PinDetails() {
   };
 
   const handleSaveClick = () => {
-    dispatch(thunkToggleSave(pin.id))
+    alert('Profile feature coming soon!');
+    // dispatch(thunkToggleSave(pin.id))
     setSaved(prev => !prev)
   };
 
   const handleProfileClick = () => {
     alert('Profile feature coming soon!');
   };
-  console.log(pinOwner)
+  console.log(pinOwner);
 
   const handleEditClick = () => {
-   navigate(`/pins/${pinId}/edit`)
+    navigate(`/pins/${pinId}/edit`);
+  };
+
+  const handleDeleteClick = () => {
+    setShowDeleteModal(true); 
+  };
+
+  const confirmDelete = () => {
+    dispatch(thunkDeletePin(pinId)).then(() => {
+      navigate('/');
+    });
+  };
+
+  const cancelDelete = () => {
+    setShowDeleteModal(false);
   };
 
   return loaded ? (
@@ -85,13 +102,25 @@ export default function PinDetails() {
         <img className="pin-img" src={pin?.content_url} alt={pin?.title} />
       </div>
       <div className="pin-inner-right">
+            {showDeleteModal && (
+              <div className="modal">
+                <div className="modal-content">
+                  <h2>Are you sure you want to delete this pin?</h2>
+                  <button className="login" onClick={confirmDelete}>Yes, delete</button>
+                  <button className="signup" onClick={cancelDelete}>No, cancel</button>
+                </div>
+              </div>
+            )}
         <div className="pin-header">
           <button onClick={() => window.history.back()} className="back-button">← Back</button>
           <div className="pin-action-buttons">
             {user && user.id === pinOwner?.id && (
-              <button className="save-button edit-button"  type="edit"   onClick={handleEditClick}>Edit</button>
+              <>
+                <button className="signup" style={{ marginRight: '5rem', cursor: 'pointer' }} onClick={handleDeleteClick}><FaTrash /> Delete</button>
+                <button className="save-button edit-button" type="edit" onClick={handleEditClick}> <FaEdit /> Edit</button>
+              </>
             )}
-            <button className="save-button" style={saved ? {backgroundColor:' #E60023'} : {backgroundColor:'black'}} onClick={handleSaveClick}>{saved ? 'Save' : 'Saved'}</button>
+            <button className="save-button" style={saved ? { backgroundColor: ' #E60023' } : { backgroundColor: 'black' }} onClick={handleSaveClick}> <FaSave /> {saved ? 'Save' : 'Saved'}</button>
             <div className="profile-menu">
               {/* <button className="profile-button" onClick={handleProfileClick}>Profile</button> */}
             </div>
@@ -101,7 +130,7 @@ export default function PinDetails() {
           <span className="pin-name">{pin?.title}</span>
           <span className="pin-description">{pin?.description}</span>
           <div className="pin-user">
-            <img className="pfp-in" style={{cursor:'pointer'}} onClick={()=> navigate(`/users/${pinOwner.id}`)} src={pinOwner?.profile_image} alt={pinOwner?.name} />
+            <img className="pfp-in" style={{ cursor: 'pointer' }} onClick={() => navigate(`/users/${pinOwner.id}`)} src={pinOwner?.profile_image} alt={pinOwner?.name} />
             <div className="nameAndFollowers">
               <span className="pin-owner-name">{pinOwner?.username}</span>
               <span>{pinOwner?.followers?.length} followers</span>
@@ -120,7 +149,7 @@ export default function PinDetails() {
             console.log(commentUser)
             return (
               <div key={comment.id} className="comment">
-                <img className="pfp"  onClick={()=> navigate(`/users/${comment.user_id}`)} src={commentUser?.profile_image} alt={commentUser?.name} />
+                <img className="pfp" onClick={() => navigate(`/users/${comment.user_id}`)} src={commentUser?.profile_image} alt={commentUser?.name} />
                 <div className="comment-text">{comment.content}</div>
                 {user && user.id === comment.user_id && (
                   <FaTrash className='trash' onClick={() => handleCommentDelete(comment.id)} />

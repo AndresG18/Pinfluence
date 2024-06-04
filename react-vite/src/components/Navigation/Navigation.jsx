@@ -17,7 +17,7 @@ function Navigation() {
       <NavLink to='/explore'className="header-link"> Feed </NavLink>
       <NavLink to='/pins/new'className="header-link"> Create </NavLink>
       <div className="searchBar" > <FaSearch/> <input className='search' placeholder="Search" type="search"/> </div>
-      <AiOutlineMessage className="message-icon" />
+      <AiOutlineMessage onClick={(e)=>window.alert('Feature Coming Soon!')} className="message-icon" />
       <ProfileButton />
     </div>
   ) : (<>
