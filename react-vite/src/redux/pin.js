@@ -94,13 +94,18 @@ export const thunkToggleLike = (pinId) => async (dispatch) => {
     return data;
 };
 
-
-export const thunkToggleSave = (pinId) => async (dispatch) => {
-    const response = await fetch(`/api/pins/${pinId}/toggle-save`, {
+export const thunkSavePin = (pinId) => async (dispatch) => {
+    const response = await fetch(`/api/pins/${pinId}/save`, {
         method: 'POST'
     });
-    const data = await response.json();
-    return data;
+    return response.json();
+};
+
+export const thunkRemoveSavePin = (pinId) => async (dispatch) => {
+    const response = await fetch(`/api/pins/${pinId}/remove-save`, {
+        method: 'POST'
+    });
+    return response.json();
 };
 
 export const thunkGetSavedPins = () => async (dispatch) => {

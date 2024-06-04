@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { thunkGetPin, thunkCreateComment, thunkDeleteComment, thunkToggleSave, thunkDeletePin } from "../../redux/pin";
+import { thunkGetPin, thunkCreateComment, thunkDeleteComment, thunkDeletePin } from "../../redux/pin";
 import { thunkGetUser, thunkToggleFollow } from "../../redux/session";
 import { FaPinterest, FaArrowRight, FaTrash, FaSave, FaEdit, FaPlus } from 'react-icons/fa';
 import { thunkGetUserBoards } from "../../redux/boards";
-import {thunkAddPinToBoard } from '../../redux/board'
+import { thunkAddPinToBoard } from '../../redux/board';
 import './PinDetails.css';
 
 export default function PinDetails() {
@@ -23,16 +23,14 @@ export default function PinDetails() {
   const user = useSelector(state => state.session.user);
   const userBoards = useSelector(state => state.boards.myBoards);
   const [following, setFollowing] = useState('');
-  const [saved, setSaved] = useState('');
-// console.log(pinOwner)
+
   useEffect(() => {
     dispatch(thunkGetPin(pinId)).then((data) => {
       setComments(data.comments);
       getUsers(data.comments);
       thunkGetUser(data.user_id).then((data) => {
         setPinOwner(data);
-        setFollowing(data?.followers.includes(user.id))
-        setSaved(data.saved.some(pin => pin.id == pinId))
+        setFollowing(data?.followers.includes(user.id));
       }).then(() => setLoaded(true));
     });
     dispatch(thunkGetUserBoards(user.id));
@@ -73,17 +71,13 @@ export default function PinDetails() {
     setFollowing(prev => !prev);
   };
 
-  const handleSaveClick =  () => {
-     thunkToggleSave(pinId).then((data)=>{
-      console.log(data)
-    })
-    setSaved(prev => !prev)
+  const handleSaveClick = () => {
+    alert('Feature coming soon!');
   };
 
   const handleProfileClick = () => {
     alert('Profile feature coming soon!');
   };
-  console.log(pinOwner);
 
   const handleEditClick = () => {
     navigate(`/pins/${pinId}/edit`);
@@ -106,7 +100,7 @@ export default function PinDetails() {
   const handleAddToBoard = (boardId) => {
     dispatch(thunkAddPinToBoard(boardId, pinId)).then(() => {
       setShowDropdown(false);
-      window.alert('added to board successfully')
+      window.alert('Added to board successfully');
     });
   };
 
@@ -134,8 +128,8 @@ export default function PinDetails() {
                 <button className="save-button edit-button" type="edit" onClick={handleEditClick}> <FaEdit /> Edit</button>
               </>
             )}
-            <button className="save-button" style={saved ? { backgroundColor: ' #E60023' } : { backgroundColor: 'black' }} onClick={handleSaveClick}> <FaSave /> {saved ? 'Saved' : 'Save'}</button>
-            <button className="login"  style={{fontSize:'1rem',padding:'9px'}} onClick={() => setShowDropdown(prev => !prev)}><FaPlus /> Add to Board</button>
+            <button className="save-button" style={{ backgroundColor: 'black' }} onClick={handleSaveClick}> <FaSave /> Save</button>
+            <button className="login" style={{ fontSize: '1rem', padding: '9px' }} onClick={() => setShowDropdown(prev => !prev)}><FaPlus /> Add to Board</button>
             {showDropdown && (
               <div className="dropdown">
                 {userBoards.map(board => (
@@ -170,7 +164,6 @@ export default function PinDetails() {
           <h3>Comments ({comments.length})</h3>
           {comments.length > 0 ? comments.map((comment) => {
             const commentUser = commentors.find(ele => ele.id === comment.user_id);
-            console.log(commentUser)
             return (
               <div key={comment.id} className="comment">
                 <img className="pfp" onClick={() => navigate(`/users/${comment.user_id}`)} src={commentUser?.profile_image} alt={commentUser?.name} />

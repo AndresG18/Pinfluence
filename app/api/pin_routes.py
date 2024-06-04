@@ -205,25 +205,36 @@ def get_saved_pins():
     saved_pins = user.get_saved()
     return {'pins': saved_pins}
 
-@pin_routes.route('/<int:pin_id>/toggle-save', methods=['POST'])
+@pin_routes.route('/<int:pin_id>/save', methods=['POST'])
 @login_required
-def toggle_save_pin_to_null_board(pin_id):
+def save_pin(pin_id):
+    try:
+        pin = Pin.query.get(pin_id)
+        if not pin:
+            return {"message": "Pin not found"}, 404
+
+        user = User.query.get(current_user.id)
+        
+        existing_entry = db.session.query(pin_board).filter_by(pin_id=pin_id, user_id=user.id, board_id=None).first()
+
+        if existing_entry:
+            return {"message": "Pin is already saved"}, 400
+        else:
+            db.session.execute(pin_board.insert().values(pin_id=pin_id, user_id=user.id, board_id=None))
+            db.session.commit()
+            return {"message": "Pin saved successfully"}, 201
+    except Exception as e:
+        return {"message": "An error occurred while saving the pin.", "error": str(e)}, 500
+
+
+@pin_routes.route('/<int:pin_id>/remove-save', methods=['POST'])
+@login_required
+def remove_save_pin(pin_id):
     pin = Pin.query.get(pin_id)
     if not pin:
         return {"message": "Pin not found"}, 404
 
     user = User.query.get(current_user.id)
-    
-    # saved = user.saved_pins
-    
-    # if pin in saved : 
-    #     user.saved_pins.remove(pin)
-    #     db.session.commmit()
-    #     return {**user.saved_pins}
-    # else : 
-    #     user.saved_pins.append(pin)
-    #     db.session.commit()
-    #     return {**user.saved_pins}
 
     existing_entry = db.session.query(pin_board).filter_by(pin_id=pin_id, user_id=user.id, board_id=None).first()
 
@@ -236,7 +247,4 @@ def toggle_save_pin_to_null_board(pin_id):
         db.session.commit()
         return {"message": "Pin removed from saved pins"}, 200
     else:
-        db.session.execute(pin_board.insert().values(pin_id=pin_id, user_id=user.id, board_id=None))
-        db.session.commit()
-        return {"message": "Pin saved to saved pins"}, 201
-    
+        return {"message": "Pin not found in saved pins"}, 404
