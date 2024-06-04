@@ -24,7 +24,7 @@ export default function PinDetails() {
   const userBoards = useSelector(state => state.boards.myBoards);
   const [following, setFollowing] = useState('');
   const [saved, setSaved] = useState('');
-
+// console.log(pinOwner)
   useEffect(() => {
     dispatch(thunkGetPin(pinId)).then((data) => {
       setComments(data.comments);
@@ -32,10 +32,11 @@ export default function PinDetails() {
       thunkGetUser(data.user_id).then((data) => {
         setPinOwner(data);
         setFollowing(data?.followers.includes(user.id))
+        setSaved(data.saved.some(pin => pin.id == pinId))
       }).then(() => setLoaded(true));
     });
     dispatch(thunkGetUserBoards(user.id));
-  }, [dispatch, pinId, following, saved]);
+  }, [dispatch, pinId, following]);
 
   const getUsers = (comments) => {
     if (comments && comments.length > 0) {
@@ -72,8 +73,10 @@ export default function PinDetails() {
     setFollowing(prev => !prev);
   };
 
-  const handleSaveClick = () => {
-    alert('Profile feature coming soon!');
+  const handleSaveClick =  () => {
+     thunkToggleSave(pinId).then((data)=>{
+      console.log(data)
+    })
     setSaved(prev => !prev)
   };
 
@@ -131,7 +134,7 @@ export default function PinDetails() {
                 <button className="save-button edit-button" type="edit" onClick={handleEditClick}> <FaEdit /> Edit</button>
               </>
             )}
-            <button className="save-button" style={saved ? { backgroundColor: ' #E60023' } : { backgroundColor: 'black' }} onClick={handleSaveClick}> <FaSave /> {saved ? 'Save' : 'Saved'}</button>
+            <button className="save-button" style={saved ? { backgroundColor: ' #E60023' } : { backgroundColor: 'black' }} onClick={handleSaveClick}> <FaSave /> {saved ? 'Saved' : 'Save'}</button>
             <button className="login"  style={{fontSize:'1rem',padding:'9px'}} onClick={() => setShowDropdown(prev => !prev)}><FaPlus /> Add to Board</button>
             {showDropdown && (
               <div className="dropdown">

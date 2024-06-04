@@ -213,6 +213,17 @@ def toggle_save_pin_to_null_board(pin_id):
         return {"message": "Pin not found"}, 404
 
     user = User.query.get(current_user.id)
+    
+    # saved = user.saved_pins
+    
+    # if pin in saved : 
+    #     user.saved_pins.remove(pin)
+    #     db.session.commmit()
+    #     return {**user.saved_pins}
+    # else : 
+    #     user.saved_pins.append(pin)
+    #     db.session.commit()
+    #     return {**user.saved_pins}
 
     existing_entry = db.session.query(pin_board).filter_by(pin_id=pin_id, user_id=user.id, board_id=None).first()
 
