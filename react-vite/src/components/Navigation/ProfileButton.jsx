@@ -47,7 +47,7 @@ function ProfileButton() {
 
   return (
     <>
-      {user ? <> <img onClick={imageClick} src={'https://pinfluence-2024.s3.us-east-2.amazonaws.com/pinfluence_pfp.webp'} alt='profile' className='profile-button' >
+      {user ? <> <img onClick={imageClick} src={ user?.profile_image ??'https://pinfluence-2024.s3.us-east-2.amazonaws.com/pinfluence_pfp.webp'} alt='profile' className='profile-button' >
       </img>
         <IoIosArrowDown className="drop" onClick={toggleMenu} /> </> : (
         <>

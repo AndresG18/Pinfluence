@@ -1,34 +1,37 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { thunkGetUserPins, thunkGetAllPins } from "../../redux/pins";
-import { thunkGetUser } from "../../redux/session";
+import { thunkGetAllPins } from "../../redux/pins";
+import { thunkGetUser, thunkToggleFollow } from "../../redux/session";
 import BoardList from "../BoardComponents/BoardList";
 import "./UserPage.css";
 
 export default function UserPage() {
   const { userId } = useParams();
   const dispatch = useDispatch();
-  const navigate = useNavigate(); 
-  const user = useSelector((state) => state.session.user);
-  const createdPins = useSelector((state) => state.pins.myPins);
-  const allPins = useSelector((state) => state.pins.allPins);
+  const navigate = useNavigate();
+  const allPins = useSelector((state) => state.pins.allPins); 
 
-  const [savedPins, setSavedPins] = useState([]); 
-  const [boards, setBoards] = useState([]); 
+  const [createdPins, setCreatedPins] = useState([]);
+  const [likedPins, setLikedPins] = useState([]);
+  const [following, setFollowing] = useState(false);
+  const [boards, setBoards] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [activeTab, setActiveTab] = useState("created");
-  const [currUser, setCurrUser] = useState("");
-  
+  const [currUser, setCurrUser] = useState(null);
+  const user = useSelector(state => state.session.user);
+
   useEffect(() => {
     thunkGetUser(userId).then((data) => {
-      dispatch(thunkGetUserPins(userId));
-      dispatch(thunkGetAllPins());
       setCurrUser(data);
-      setSavedPins(data.saved);
-      setBoards(data.boards); 
-    }).then(() => setLoaded(true));
-  }, [dispatch, userId]);
+      setCreatedPins(data.pins);
+      setLikedPins(data.likes); 
+      setBoards(data.boards);
+      setFollowing(data.followers.includes(user.id));
+      setLoaded(true);
+    });
+    dispatch(thunkGetAllPins());
+  }, [dispatch, userId,following]);
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -42,19 +45,29 @@ export default function UserPage() {
     navigate(`/boards/new`);
   };
 
+  const handleFollowToggle = async () => {
+    await thunkToggleFollow(currUser.id)();
+    setFollowing(prev => !prev)
+  };
+
   return (
     <div className="user-page">
       {loaded ? (
         <>
           <div className="user-info">
             <img
-            style={{height:'7rem',width:'7rem'}}
-              src={currUser.profile_image}
-              alt={`${currUser.username}'s profile`}
+              style={{ height: '7rem', width: '7rem' }}
+              src={currUser?.profile_image ?? 'https://pinfluence-2024.s3.us-east-2.amazonaws.com/pinfluence_pfp.webp'}
+              alt={`${currUser?.username}'s profile`}
               className="profile-image"
             />
-            <h2 className="profile-name">{currUser.username}</h2>
-            <p >{currUser.about}</p>
+            <h2 className="profile-name">{currUser?.username}</h2>
+            <p>{currUser?.about}</p>
+            {user.id !== currUser?.id && (
+              <button className="signup" onClick={handleFollowToggle}>
+                {following ? "Unfollow" : "Follow"}
+              </button>
+            )}
             <div className="following">
               <span>{currUser?.followers?.length} Followers</span> •
               <span>{currUser?.following?.length} Following</span>
@@ -68,33 +81,36 @@ export default function UserPage() {
               Created
             </button>
             <button
-              className={`tab ${activeTab === "saved" ? "active" : ""}`}
-              onClick={() => handleTabChange("saved")}
+              className={`tab ${activeTab === "Saved" ? "active" : ""}`}
+              onClick={() => handleTabChange("Saved")}
             >
               Saved
             </button>
           </div>
-          {activeTab === "saved" && (
+          {activeTab === "Saved" && currUser.id === user.id && (
             <button className="create-board-button" onClick={handleCreateBoard}>
-              Add Board +
+              Add a Board +
             </button>
           )}
-          <div className="pin-container">
-            {activeTab === "created" && createdPins.length > 0 ? (
-              createdPins.map((pin) => (
+          {activeTab === "created" && createdPins.length > 0 ? (
+            <div className="pin-container">
+              {createdPins.map((pin) => (
                 <div key={pin.id} className="pin" onClick={() => handlePinClick(pin.id)}>
                   <img src={pin.content_url} alt={pin.title} className="pin-image" />
                   <div className="pin-title">{pin.title}</div>
                 </div>
-              ))
-            ) : activeTab === "saved" ? (
-              <>
-                <BoardList boards={boards} pins={allPins} />
-              </>
-            ) : (
-              <div className="loading">No Pins Found</div>
-            )}
-          </div>
+              ))}
+            </div>
+          ) : activeTab === "Saved" ? (
+            
+            <BoardList boards={boards} pins={allPins} />
+          ) : (
+            currUser.id === user.id && (
+              <button onClick={() => navigate('/pins/new')} className="create-board-button">
+                Create a pin +
+              </button>
+            )
+          )}
         </>
       ) : (
         <div className="loading">Loading...</div>

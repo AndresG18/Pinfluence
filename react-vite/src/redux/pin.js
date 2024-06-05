@@ -85,28 +85,14 @@ export const thunkDeleteComment = (pinId, commentId) => async (dispatch) => {
     return data;
 };
 
-export const thunkToggleLike = (pinId) => async (dispatch) => {
+export const thunkToggleLike = async (pinId) => {
     const response = await fetch(`/api/pins/${pinId}/like`, {
         method: 'POST'
     });
     const data = await response.json();
-    if (response.ok) dispatch(getPin(data)); 
     return data;
 };
 
-export const thunkSavePin = (pinId) => async (dispatch) => {
-    const response = await fetch(`/api/pins/${pinId}/save`, {
-        method: 'POST'
-    });
-    return response.json();
-};
-
-export const thunkRemoveSavePin = (pinId) => async (dispatch) => {
-    const response = await fetch(`/api/pins/${pinId}/remove-save`, {
-        method: 'POST'
-    });
-    return response.json();
-};
 
 export const thunkGetSavedPins = () => async (dispatch) => {
     const response = await fetch('/api/pins/saved');

@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { thunkGetPin, thunkCreateComment, thunkDeleteComment, thunkDeletePin } from "../../redux/pin";
+import { thunkGetPin, thunkCreateComment, thunkDeleteComment, thunkDeletePin, thunkToggleLike } from "../../redux/pin";
 import { thunkGetUser, thunkToggleFollow } from "../../redux/session";
-import { FaPinterest, FaArrowRight, FaTrash, FaSave, FaEdit, FaPlus } from 'react-icons/fa';
+import { FaPinterest, FaArrowRight, FaTrash, FaSave, FaEdit, FaPlus, } from 'react-icons/fa';
+import { IoSend } from "react-icons/io5";
 import { thunkGetUserBoards } from "../../redux/boards";
 import { thunkAddPinToBoard } from '../../redux/board';
 import './PinDetails.css';
@@ -22,19 +23,21 @@ export default function PinDetails() {
   const pin = useSelector(state => state.pin.pin);
   const user = useSelector(state => state.session.user);
   const userBoards = useSelector(state => state.boards.myBoards);
-  const [following, setFollowing] = useState('');
-
+  const [following, setFollowing] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [errors,setErrors ] = useState('')
   useEffect(() => {
     dispatch(thunkGetPin(pinId)).then((data) => {
       setComments(data.comments);
       getUsers(data.comments);
       thunkGetUser(data.user_id).then((data) => {
         setPinOwner(data);
-        setFollowing(data?.followers.includes(user.id));
+        setFollowing(data.followers.includes(user.id));
+        setSaved(user.likes.some(pin => pin.pin_id == pinId));
+        dispatch(thunkGetUserBoards(data.id));
       }).then(() => setLoaded(true));
     });
-    dispatch(thunkGetUserBoards(user.id));
-  }, [dispatch, pinId, following]);
+  }, [dispatch, pinId]);
 
   const getUsers = (comments) => {
     if (comments && comments.length > 0) {
@@ -49,6 +52,10 @@ export default function PinDetails() {
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
     const commentObj = { 'content': comment };
+    if(comment.length > 200){
+      setErrors('comment must be between 3-200 characters')
+      return
+    }
     dispatch(thunkCreateComment(pinId, commentObj)).then(() => {
       dispatch(thunkGetPin(pinId)).then((data) => {
         setComments(data.comments);
@@ -67,16 +74,29 @@ export default function PinDetails() {
   };
 
   const handleFollowToggle = async () => {
-    dispatch(thunkToggleFollow(pinOwner.id));
-    setFollowing(prev => !prev);
+    const result = await dispatch(thunkToggleFollow(pinOwner.id));
+    if (result.message === "User followed") {
+      setFollowing(true);
+      setPinOwner(prev => ({
+        ...prev,
+        followers: [...prev.followers, user.id]
+      }));
+    } else {
+      setFollowing(false);
+      setPinOwner(prev => ({
+        ...prev,
+        followers: prev.followers.filter(followerId => followerId !== user.id)
+      }));
+    }
   };
 
-  const handleSaveClick = () => {
-    alert('Feature coming soon!');
-  };
-
-  const handleProfileClick = () => {
-    alert('Profile feature coming soon!');
+  const handleSaveToggle = async () => {
+    const result = await thunkToggleLike(pinId);
+    if (result.message === "Pin liked") {
+      setSaved(true);
+    } else {
+      setSaved(false);
+    }
   };
 
   const handleEditClick = () => {
@@ -100,7 +120,6 @@ export default function PinDetails() {
   const handleAddToBoard = (boardId) => {
     dispatch(thunkAddPinToBoard(boardId, pinId)).then(() => {
       setShowDropdown(false);
-      window.alert('Added to board successfully');
     });
   };
 
@@ -128,20 +147,17 @@ export default function PinDetails() {
                 <button className="save-button edit-button" type="edit" onClick={handleEditClick}> <FaEdit /> Edit</button>
               </>
             )}
-            <button className="save-button" style={{ backgroundColor: 'black' }} onClick={handleSaveClick}> <FaSave /> Save</button>
+            <button className="login" onClick={handleSaveToggle}> {saved ? 'Saved' : 'Save'}</button>
             <button className="login" style={{ fontSize: '1rem', padding: '9px' }} onClick={() => setShowDropdown(prev => !prev)}><FaPlus /> Add to Board</button>
             {showDropdown && (
               <div className="dropdown">
-                {userBoards.map(board => (
+                { userBoards.length > 0 ? userBoards.map(board => (
                   <div key={board.id} onClick={() => handleAddToBoard(board.id)} className="dropdown-item">
                     {board.name}
-                  </div>
-                ))}
+                  </div>  
+                )) :  'You have no boards'} 
               </div>
             )}
-            <div className="profile-menu">
-              {/* <button className="profile-button" onClick={handleProfileClick}>Profile</button> */}
-            </div>
           </div>
         </div>
         <div className="pin-info">
@@ -166,7 +182,7 @@ export default function PinDetails() {
             const commentUser = commentors.find(ele => ele.id === comment.user_id);
             return (
               <div key={comment.id} className="comment">
-                <img className="pfp" onClick={() => navigate(`/users/${comment.user_id}`)} src={commentUser?.profile_image} alt={commentUser?.name} />
+                <img className="pfp" onClick={() => navigate(`/users/${comment.user_id}`)} src={commentUser?.profile_image ?? 'https://pinfluence-2024.s3.us-east-2.amazonaws.com/pinfluence_pfp.webp'} alt={commentUser?.name} />
                 <div className="comment-text">{comment.content}</div>
                 {user && user.id === comment.user_id && (
                   <FaTrash className='trash' onClick={() => handleCommentDelete(comment.id)} />
@@ -179,7 +195,8 @@ export default function PinDetails() {
         </div>
         {user && (
           <form onSubmit={handleCommentSubmit} className="comment-form">
-            <img className="pfp-in" src={user.profile_image} alt={user?.username} />
+            <img className="pfp-in" style={{marginRight:'10px'}} src={user?.profile_image ?? 'https://pinfluence-2024.s3.us-east-2.amazonaws.com/pinfluence_pfp.webp'} alt={user?.username} />
+            <div className="comment-bar">
             <input
               className="comment-input"
               type="text"
@@ -189,11 +206,13 @@ export default function PinDetails() {
             />
             {comment.length > 3 && (
               <button type="submit" className="comment-submit-button">
-                <FaArrowRight />
+                <IoSend />
               </button>
             )}
+            </div>
           </form>
         )}
+        {errors.length >10 && <p className="error"> {errors}</p>}
       </div>
     </div>
   ) : (

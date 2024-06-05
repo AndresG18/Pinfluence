@@ -13,15 +13,38 @@ function SignupFormModal() {
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
 
+  const validateForm = () => {
+    const newErrors = {};
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!emailRegex.test(email)) {
+      newErrors.email = "Email is invalid";
+    }
+
+    if (!username.trim().length < 3) {
+      newErrors.username = "Username is must be at least 3 characters long";
+    }
+
+    if (!password.trim()) {
+      newErrors.password = "Password is required";
+    } else if (password.length < 6 || password.length > 24) {
+      newErrors.password = "Password must be between 6-24 characters long";
+    }
+
+    if (password !== confirmPassword) {
+      newErrors.confirmPassword = "Confirm Password must match the Password";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (password !== confirmPassword) {
-      return setErrors({
-        confirmPassword:
-          "Confirm Password field must be the same as the Password field",
-      });
-    }
+    if (!validateForm()) return;
 
     const serverResponse = await dispatch(
       thunkSignup({

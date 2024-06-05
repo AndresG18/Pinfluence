@@ -23,7 +23,7 @@ const BoardDetails = () => {
 
   const handleDeleteClick = () => {
     dispatch(thunkDeleteBoard(boardId)).then(() => {
-      navigate('/');
+      navigate(`/users/${user.id}`);
     });
   };
 

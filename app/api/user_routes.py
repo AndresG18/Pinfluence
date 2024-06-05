@@ -30,13 +30,14 @@ def user(id):
     pins = user.saved_pins
     boards = user.boards
     pinz = user.pins
+    liked = user.pin_likes
     return {
         **user.to_dict(),
         "followers": [follower.follower_id for follower in followers],
         "following": [follow.followed_id for follow in following],
         'saved':[pin.to_dict() for pin in pins],
         "boards":[board.to_dict() for board in boards],
-        "pins" : [pin.to_dict() for pin in pinz]
+        "pins" : [pin.to_dict() for pin in pinz],
     }
 
 @user_routes.route('/<int:id>/edit>',methods=['PUT'])
@@ -65,7 +66,9 @@ def toggle_follow_user(user_id):
     user = User.query.get(user_id)
     if not user:
         return {"message": "User not found"}, 404
+
     follow = UserFollow.query.filter_by(follower_id=current_user.id, followed_id=user_id).first()
+
     if follow:
         db.session.delete(follow)
         message = "User unfollowed"
@@ -74,7 +77,8 @@ def toggle_follow_user(user_id):
         db.session.add(new_follow)
         message = "User followed"
     db.session.commit()
-    return {"message": message, "user": user.to_dict()}, 200
+    return {"message": message}, 200
+
 # Toggle follow/unfollow a user
 
 # @user_routes.route('/<int:user_id>/followers')

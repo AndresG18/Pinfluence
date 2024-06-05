@@ -55,11 +55,11 @@ const PinForm = () => {
     setFileError('');
 
     const validationErrors = {};
-    if (title.length < 3) {
-      validationErrors.title = 'Title must be at least 3 characters.';
+    if (title.length < 3 || title.length > 40) {
+      validationErrors.title = 'Title must be between 3 and 40 characters.';
     }
-    if (description.length < 3) {
-      validationErrors.description = 'Description must be at least 3 characters.';
+    if (description.length < 3 || description.length > 700) {
+      validationErrors.description = 'Description must be at between 3 and 300 characters.';
     }
     if (!media) {
       validationErrors.media = 'Please upload an image or video.';
@@ -82,8 +82,8 @@ const PinForm = () => {
     } else {
       if (selectedBoard) {
         await dispatch(thunkAddPinToBoard(selectedBoard, response.id));
-        navigate(`/pins/${response.id}`)
       }
+      navigate(`/pins/${response.id}`)
     }
   };
 
@@ -165,13 +165,6 @@ const PinForm = () => {
           </div>
         </div>
       </form>
-      {Object.keys(errors).length > 0 && (
-        <div className="error-messages">
-          {Object.values(errors).map((error, idx) => (
-            <p key={idx}>{error}</p>
-          ))}
-        </div>
-      )}
     </div>
   );
 };
