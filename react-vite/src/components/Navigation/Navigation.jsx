@@ -31,7 +31,7 @@ function Navigation() {
     </div>
   ) : (<div className="nav-logged-out">
    <div className="header-out">
-    <div className="home-logo">
+    <div className="home-logo" onClick={()=> navigate('/')}>
       <FaPinterest className="logo"  />
       <h2 className="nav-header">influence</h2>
     </div>
