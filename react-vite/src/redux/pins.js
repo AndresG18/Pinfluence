@@ -33,6 +33,11 @@ export const thunkGetFollowingPins = () => async (dispatch) => {
     }
     return data;
 };
+export const getAllBoardPins = (boardId)=> async ()=>{
+    const response = await fetch(`/api/boards/${boardId}/pins`)
+    const data = await response.json()
+    return data
+}
 
 
 const initialState = {

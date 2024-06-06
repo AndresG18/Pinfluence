@@ -69,7 +69,7 @@
   .board:hover {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     scale: 1.1;
-    transition: .5s;
+    transition: .2s ease-in-out;
     z-index: 1;
   }
   
@@ -121,10 +121,12 @@
     font-size: 18px;
     font-weight: bold;
     text-align: center;
+    margin: 0px;
   }
   
   .board p {
     padding: 0 10px 10px;
+    margin: 0px;
     font-size: 14px;
     text-align: center;
     color: #555;
@@ -160,7 +162,7 @@
  .create-board-button{
     font-size: 1rem;
     /* font-weight: 700; */
-    margin-top: 15px;
+    margin:12px;
     background-color: #e60023;
     border: none;
     color: white;
@@ -171,3 +173,11 @@
  .create-board-button:hover{
     background-color: #d00725;
  }
+ .saved-pins{
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+ }
+ 

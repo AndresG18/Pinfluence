@@ -5,12 +5,13 @@ import { thunkGetAllPins } from "../../redux/pins";
 import { thunkGetUser, thunkToggleFollow } from "../../redux/session";
 import BoardList from "../BoardComponents/BoardList";
 import "./UserPage.css";
+import PinList from "../PinComponents/PinList";
 
 export default function UserPage() {
   const { userId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const allPins = useSelector((state) => state.pins.allPins); 
+  const allPins = useSelector((state) => state.pins.allPins);
 
   const [createdPins, setCreatedPins] = useState([]);
   const [likedPins, setLikedPins] = useState([]);
@@ -19,19 +20,29 @@ export default function UserPage() {
   const [loaded, setLoaded] = useState(false);
   const [activeTab, setActiveTab] = useState("created");
   const [currUser, setCurrUser] = useState(null);
-  const user = useSelector(state => state.session.user);
+  const user = useSelector((state) => state.session.user);
 
   useEffect(() => {
-    thunkGetUser(userId).then((data) => {
-      setCurrUser(data);
-      setCreatedPins(data.pins);
-      setLikedPins(data.likes); 
-      setBoards(data.boards);
-      setFollowing(data.followers.includes(user.id));
+    if (!user) navigate('/');
+
+    const fetchData = async () => {
+      const userData = await thunkGetUser(userId);
+      setCurrUser(userData);
+      setCreatedPins(userData.pins);
+      setBoards(userData.boards);
+      setFollowing(userData.followers.includes(user.id));
+
+      await dispatch(thunkGetAllPins());
+
+      const likedPinsArray = userData.likes.map((like) => like.pin_id);
+      const filteredLikedPins = allPins.filter((pin) => likedPinsArray.includes(pin.id));
+      setLikedPins(filteredLikedPins);
+
       setLoaded(true);
-    });
-    dispatch(thunkGetAllPins());
-  }, [dispatch, userId,following]);
+    };
+
+    fetchData();
+  }, [dispatch, userId, user, navigate]);
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -46,8 +57,8 @@ export default function UserPage() {
   };
 
   const handleFollowToggle = async () => {
-    await thunkToggleFollow(currUser.id)();
-    setFollowing(prev => !prev)
+    await dispatch(thunkToggleFollow(currUser.id));
+    setFollowing((prev) => !prev);
   };
 
   return (
@@ -93,7 +104,11 @@ export default function UserPage() {
             </button>
           )}
           {activeTab === "created" && createdPins.length > 0 ? (
-            <div className="pin-container">
+            <>
+              <button onClick={() => navigate('/pins/new')} className="create-board-button">
+                Create a pin +
+              </button>
+            <div className="pin-container" style={{margin:'0px'}}>
               {createdPins.map((pin) => (
                 <div key={pin.id} className="pin" onClick={() => handlePinClick(pin.id)}>
                   <img src={pin.content_url} alt={pin.title} className="pin-image" />
@@ -101,9 +116,14 @@ export default function UserPage() {
                 </div>
               ))}
             </div>
-          ) : activeTab === "Saved" ? (
-            
-            <BoardList boards={boards} pins={allPins} />
+          </>) : activeTab === "Saved" ? (
+            <>
+              <BoardList boards={boards} pins={allPins} />
+              <div className="saved-pins">
+                <h2 >Saved Pins</h2>
+                <PinList pins={likedPins} />
+              </div>
+            </>
           ) : (
             currUser.id === user.id && (
               <button onClick={() => navigate('/pins/new')} className="create-board-button">

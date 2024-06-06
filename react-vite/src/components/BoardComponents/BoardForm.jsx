@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import { thunkGetBoard, thunkCreateBoard, thunkEditBoard } from '../../redux/board';
 
+
 const BoardForm = ({ isEditing }) => {
   const { boardId } = useParams();
   const dispatch = useDispatch();
@@ -11,8 +12,10 @@ const BoardForm = ({ isEditing }) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [errors, setErrors] = useState({});
+  const user = useSelector(state => state.session.user)
 
   useEffect(() => {
+    if(!user)navigate('/')
     if (isEditing && boardId) {
       dispatch(thunkGetBoard(boardId)).then((data) => {
         setName(data.name);
@@ -21,10 +24,29 @@ const BoardForm = ({ isEditing }) => {
     }
   }, [dispatch, boardId, isEditing]);
 
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (name.trim().length > 30) {
+      newErrors.name = "Title can't be more than 30 characters";
+    }
+    if (description.trim().length > 60) {
+      newErrors.description = "Description can't be more than 60 characters";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
     const boardData = { name, description };
-    
+
     if (isEditing) {
       const response = await dispatch(thunkEditBoard(boardId, boardData));
       if (response.errors) {
@@ -43,9 +65,9 @@ const BoardForm = ({ isEditing }) => {
   };
 
   return (
-    <div  className="board-form-container">
+    <div className="board-form-container">
       <h2>{isEditing ? 'Edit Board' : 'Create Board'}</h2>
-      <form  className='board-form' onSubmit={handleSubmit}>
+      <form className='board-form' onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="name">Name</label>
           <input 

@@ -25,5 +25,6 @@ class Board(db.Model):
             'user_id': self.user_id,
             'name': self.name,
             'description': self.description,
-            'count': len(self.pins)
+            'count': len(self.pins),
+            'pins':self.get_pins()
         }

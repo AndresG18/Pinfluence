@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDropzone } from 'react-dropzone';
 import { thunkCreatePin } from '../../redux/pin';
@@ -6,13 +6,15 @@ import { thunkAddPinToBoard } from '../../redux/board';
 import { thunkGetUserBoards } from '../../redux/boards';
 import { FaTrash } from 'react-icons/fa';
 import './PinForm.css';
-import { Navigate, useNavigate } from 'react-router-dom';
+import '../BoardComponents/BoardDetails.css';
+import { useNavigate } from 'react-router-dom';
+import BoardForm from '../BoardComponents/BoardForm';
 
 const PinForm = () => {
   const dispatch = useDispatch();
   const user = useSelector(state => state.session.user);
   const boards = useSelector(state => state.boards.myBoards);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [link, setLink] = useState('');
@@ -21,12 +23,13 @@ const PinForm = () => {
   const [errors, setErrors] = useState({});
   const [fileError, setFileError] = useState('');
   const [loaded, setLoaded] = useState(false);
+  const boardFormRef = useRef(null);
 
   useEffect(() => {
     if (user) {
       dispatch(thunkGetUserBoards()).then(() => setLoaded(true));
     }
-  }, [dispatch, user, setLoaded]);
+  }, [dispatch, user]);
 
   const onDrop = (acceptedFiles, rejectedFiles) => {
     const file = acceptedFiles[0];
@@ -59,7 +62,7 @@ const PinForm = () => {
       validationErrors.title = 'Title must be between 3 and 40 characters.';
     }
     if (description.length < 3 || description.length > 700) {
-      validationErrors.description = 'Description must be at between 3 and 300 characters.';
+      validationErrors.description = 'Description must be between 3 and 300 characters.';
     }
     if (!media) {
       validationErrors.media = 'Please upload an image or video.';
@@ -83,89 +86,103 @@ const PinForm = () => {
       if (selectedBoard) {
         await dispatch(thunkAddPinToBoard(selectedBoard, response.id));
       }
-      navigate(`/pins/${response.id}`)
+      navigate(`/pins/${response.id}`);
+    }
+  };
+
+  const scrollToBoardForm = () => {
+    if (boardFormRef.current) {
+      boardFormRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
   return (
-    <div className="pin-form-container">
-      <div className="pin-form-header">
-        <h2>Create Pin</h2>
-        <button onClick={handleSubmit} className="publish-button">Publish</button>
+    <>
+      <div className="pin-form-container">
+        <div className="pin-form-header">
+          <h2>Create Pin</h2>
+          <button onClick={handleSubmit} className="publish-button">Publish</button>
+        </div>
+        <form onSubmit={handleSubmit} className="pin-form">
+          <div className="pin-content">
+            {media ? (
+              <div className="media-preview-container">
+                {media.type.startsWith('image/') ? (
+                  <img src={URL.createObjectURL(media)} alt="Pin Content" className="pin-preview" />
+                ) : (
+                  <video src={URL.createObjectURL(media)} className="pin-preview" controls />
+                )}
+                <button type="button" className="remove-media-button" onClick={handleRemoveMedia}>
+                  <FaTrash />
+                </button>
+              </div>
+            ) : (
+              <div {...getRootProps({ className: 'dropzone' })}>
+                <input {...getInputProps()} />
+                {isDragActive ? (
+                  <p>Drop the files here ...</p>
+                ) : (
+                  <p>Drag 'n' drop an image or video here, or click to select one</p>
+                )}
+              </div>
+            )}
+            {errors.media && <div className="error-messages">{errors.media}</div>}
+            {fileError && <div className="error-messages">{fileError}</div>}
+          </div>
+          <div className="pin-details">
+            <div className="form-group">
+              <label htmlFor="title">Title</label>
+              <input 
+                id="title" 
+                type="text" 
+                value={title} 
+                onChange={(e) => setTitle(e.target.value)} 
+                required 
+              />
+              {errors.title && <div className="error-messages">{errors.title}</div>}
+            </div>
+            <div className="form-group">
+              <label htmlFor="description">Description</label>
+              <textarea 
+                id="description" 
+                value={description} 
+                onChange={(e) => setDescription(e.target.value)} 
+                required 
+              />
+              {errors.description && <div className="error-messages">{errors.description}</div>}
+            </div>
+            <div className="form-group" style={{marginBottom:'0px'}}>
+              <label htmlFor="link">Link (optional)</label>
+              <input 
+                id="link" 
+                type="text" 
+                value={link} 
+                onChange={(e) => setLink(e.target.value)} 
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="boardId">Save to a Board (optional)</label>
+              <select 
+                style={{marginBottom:'0px'}}
+                id="boardId" 
+                value={selectedBoard} 
+                onChange={(e) => setSelectedBoard(e.target.value)} 
+              >
+                <option value="" disabled>Select Board</option>
+                {loaded && boards.map(board => (
+                  <option key={board.id} value={board.id}>{board.name}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </form>
+        <p style={{margin:'0px'}}>or...</p>
+        <button onClick={scrollToBoardForm} className='signup'>Create a board</button>
       </div>
-      <form onSubmit={handleSubmit} className="pin-form">
-        <div className="pin-content">
-          {media ? (
-            <div className="media-preview-container">
-              {media.type.startsWith('image/') ? (
-                <img src={URL.createObjectURL(media)} alt="Pin Content" className="pin-preview" />
-              ) : (
-                <video src={URL.createObjectURL(media)} className="pin-preview" controls />
-              )}
-              <button type="button" className="remove-media-button" onClick={handleRemoveMedia}>
-                <FaTrash />
-              </button>
-            </div>
-          ) : (
-            <div {...getRootProps({ className: 'dropzone' })}>
-              <input {...getInputProps()} />
-              {isDragActive ? (
-                <p>Drop the files here ...</p>
-              ) : (
-                <p>Drag 'n' drop an image or video here, or click to select one</p>
-              )}
-            </div>
-          )}
-          {errors.media && <div className="error-messages">{errors.media}</div>}
-          {fileError && <div className="error-messages">{fileError}</div>}
-        </div>
-        <div className="pin-details">
-          <div className="form-group">
-            <label htmlFor="title">Title</label>
-            <input 
-              id="title" 
-              type="text" 
-              value={title} 
-              onChange={(e) => setTitle(e.target.value)} 
-              required 
-            />
-            {errors.title && <div className="error-messages">{errors.title}</div>}
-          </div>
-          <div className="form-group">
-            <label htmlFor="description">Description</label>
-            <textarea 
-              id="description" 
-              value={description} 
-              onChange={(e) => setDescription(e.target.value)} 
-              required 
-            />
-            {errors.description && <div className="error-messages">{errors.description}</div>}
-          </div>
-          <div className="form-group">
-            <label htmlFor="link">Link (optional)</label>
-            <input 
-              id="link" 
-              type="text" 
-              value={link} 
-              onChange={(e) => setLink(e.target.value)} 
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="boardId">Save to a Board (optional)</label>
-            <select 
-              id="boardId" 
-              value={selectedBoard} 
-              onChange={(e) => setSelectedBoard(e.target.value)} 
-            >
-              <option value="" disabled>Select Board</option>
-              {loaded && boards.map(board => (
-                <option key={board.id} value={board.id}>{board.name}</option>
-              ))}
-            </select>
-          </div>
-        </div>
-      </form>
-    </div>
+      <div style={{margin:'9rem'}} ref={boardFormRef}>
+        <BoardForm />
+      </div>
+    </>
   );
 };
 

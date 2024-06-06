@@ -1,18 +1,19 @@
-import React from 'react';
+import React, { useEffect,useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import './BoardList.css';
-
+import { getAllBoardPins } from '../../redux/pins';
 const BoardList = ({ boards, pins }) => {
   const navigate = useNavigate();
-
+  const [loaded,setLoaded] = useState(false)
   const handleBoardClick = (boardId) => {
     navigate(`/boards/${boardId}`);
   };
 
+
   return (
     <div className="board-list">
       {boards.map((board) => {
-        const boardPins = pins.slice(0, 3);
+        const boardPins = board.pins
+        console.log(boardPins)
         return (
           <div key={board.id} className="board" onClick={() => handleBoardClick(board.id)}>
             <div className="board-preview">
@@ -20,7 +21,7 @@ const BoardList = ({ boards, pins }) => {
                 <img src={boardPins[0].content_url} alt={boardPins[0].title} className="single-image" />
               ) : (
                 <div className="collage">
-                  {boardPins.map((pin, index) => (
+                  {boardPins.slice(0).reverse().map((pin, index) => (
                     <img
                       key={pin.id}
                       src={pin.content_url}
@@ -32,12 +33,12 @@ const BoardList = ({ boards, pins }) => {
               )}
             </div>
             <h4>{board.name}</h4>
-            <p>{board.description}</p>
+            {/* <p>{board.description}</p> */}
           </div>
         );
       })}
     </div>
-  );
+  ) 
 };
 
 export default BoardList;

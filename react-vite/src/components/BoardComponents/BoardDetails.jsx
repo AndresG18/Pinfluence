@@ -27,7 +27,8 @@ const BoardDetails = () => {
     });
   };
 
-  const handleRemovePin = (pinId) => {
+  const handleRemovePin = (e,pinId) => {
+    e.stopPropagation()
     dispatch(thunkRemovePinFromBoard(boardId, pinId)).then(() => {
       dispatch(thunkGetBoard(boardId));
     });
@@ -54,14 +55,14 @@ const BoardDetails = () => {
           <div className="pin-container">
             {board.pins && board.pins.length > 0 ? (
               board.pins.map((pin) => (
-                <div key={pin.id} className="pin">
+                <div key={pin.id} onClick={()=>navigate(`/pins/${pin.id}`)} className="pin">
                   <img src={pin.content_url} alt={pin.title} className="pin-image" />
                   <div className="pin-title">
                     {pin.title}
                     {user && user.id === board.user_id && (
                       <FaTrash
                         className="remove-icon"
-                        onClick={() => handleRemovePin(pin.id)}
+                        onClick={(e) => handleRemovePin(e,pin.id)}
                       />
                     )}
                   </div>

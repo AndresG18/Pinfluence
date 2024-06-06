@@ -38,6 +38,7 @@ export default function ExplorePage() {
     };
 
     useEffect(() => {
+        if(!user)navigate('/')
         if (userId) {
             getFollowing(userId).then((data) => {
                 setFollowing(data.following);
