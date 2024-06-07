@@ -51,9 +51,10 @@ function LoginFormModal() {
       }
     }
   };
-
+  
   return (
     <>
+    <button className="modal-button"  onClick={login}>Login as DemoUser</button>
       <h1 className="modal-title">Log In</h1>
       <form onSubmit={handleSubmit} className="modal-form">
         <label className="modal-label">
@@ -80,7 +81,6 @@ function LoginFormModal() {
         {errors.password && <p className="modal-error">{errors.password}</p>}
         {errors.message && <p className="modal-error">{errors.message}</p>}
         <button type="submit" className="modal-button">Log In</button>
-        <button className="modal-button"  onClick={login}>Login as DemoUser</button>
       </form>
     </>
   );
