@@ -123,6 +123,7 @@ export default function PinDetails() {
   };
 
   const handleAddToBoard = (boardId) => {
+    setShowDropdown(false)
     dispatch(thunkAddPinToBoard(boardId, pinId)).then(() => {
       setShowDropdown(false);
       setShowNotification(true);
@@ -197,18 +198,20 @@ export default function PinDetails() {
             )}
           </div>
         </div>
-        <div className="pin-comments">
-          <h4 style={{margin:'0px'}}>Comments</h4>
-          {comments.length > 0 ? comments.slice(0).reverse().map((comment) => {
+            <h3 style={{width:'100%',margin:'0px'}}>Comments ({comments.length})</h3>
+            <div className="pin-comments">
+          {/* <h4 style={{margin:'0px'}}>Comments</h4> */}
+          {comments.length > 0 ? comments.slice(0).reverse().map((comment, index) => {
             const commentUser = commentors.find(ele => ele.id === comment.user_id);
+            const isLastComment = index === comments.length - 1;
             return (
-              <div key={comment.id} className="comment">
+              <div key={comment.id} className={`comment ${isLastComment ? 'last-comment' : ''}`}>
                 <img className="pfp" style={{alignSelf:'start'}} onClick={() => navigate(`/users/${comment.user_id}`)} src={commentUser?.profile_image ?? 'https://pinfluence-2024.s3.us-east-2.amazonaws.com/pinfluence_pfp.webp'} alt={commentUser?.name} />
                 <div className="username" style={{alignSelf:'start'}}>{commentUser?.username}</div>
                 <div className="comment-text" style={{alignSelf:'start'}}>{comment.content}</div>
                 {user && user.id === comment.user_id && (
                   <FaTrash className='trash' onClick={() => handleCommentDelete(comment.id)} />
-                  )}
+                )}
               </div>
             );
           }) : (
@@ -217,7 +220,6 @@ export default function PinDetails() {
         </div>
         {user && (
           <div className="com">
-            <h3 style={{width:'100%',margin:'0px'}}>Comments ({comments.length})</h3>
           <form onSubmit={handleCommentSubmit} className="comment-form">
             <img className="pfp-in" style={{ marginRight: '10px' }} src={user?.profile_image ?? 'https://pinfluence-2024.s3.us-east-2.amazonaws.com/pinfluence_pfp.webp'} alt={user?.username} />
             <div className="comment-bar">

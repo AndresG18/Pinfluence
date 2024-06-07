@@ -15,7 +15,13 @@ function LoginFormModal() {
     const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
     return re.test(String(email).toLowerCase());
   };
-
+  const login = ()=>{
+    const loginObj = {
+      "email":"demoUser@gmail.com",
+      "password":'password123'
+    }
+  dispatch(thunkLogin(loginObj))
+  }
   const handleSubmit = async (e) => {
     e.preventDefault();
     let validationErrors = {};
@@ -74,6 +80,7 @@ function LoginFormModal() {
         {errors.password && <p className="modal-error">{errors.password}</p>}
         {errors.message && <p className="modal-error">{errors.message}</p>}
         <button type="submit" className="modal-button">Log In</button>
+        <button className="modal-button"  onClick={login}>Login as DemoUser</button>
       </form>
     </>
   );
