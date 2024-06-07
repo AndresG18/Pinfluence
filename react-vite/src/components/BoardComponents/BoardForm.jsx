@@ -26,8 +26,8 @@ const BoardForm = ({ isEditing }) => {
   const validateForm = () => {
     const newErrors = {};
 
-    if (name.trim().length > 30) {
-      newErrors.name = "Title can't be more than 30 characters";
+    if (name.trim().length > 30 || name.trim().length < 4) {
+      newErrors.name = "Title must be between 4-30 characters";
     }
     if (description.trim().length > 60) {
       newErrors.description = "Description can't be more than 60 characters";
