@@ -30,7 +30,7 @@ function Navigation() {
 
   const header = user ? (
     <div className="header">
-      <FaPinterest className="logo" />
+      <FaPinterest className="logo"  onClick={() => navigate('/home')} />
       <NavLink to='/home' className="header-link">Home</NavLink>
       <NavLink to='/explore' className="header-link">Feed</NavLink>
       <NavLink to='/pins/new' className="header-link">Create</NavLink>
