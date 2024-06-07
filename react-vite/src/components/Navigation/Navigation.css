@@ -213,7 +213,9 @@ border-radius: 50px;
   z-index: 1;
   margin-top: 0px;
   padding: 15px;
-  margin-right: 10px;
+  /* margin-right: 20px; */
+  margin-left: -8px;
+  width: 98%;
 }
 .home-logo{
   cursor: pointer;
