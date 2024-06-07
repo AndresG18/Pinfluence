@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import SignupFormPage from '../SignupFormPage'
-import LoginFormModal from '../LoginFormModal'
 import './Splash.css'
 export default function Splash() {
     const user = useSelector(state=> state.session.user)

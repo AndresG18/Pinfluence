@@ -16,7 +16,7 @@ useEffect(()=>{
 
 return (
   <div className="homepage">
-    {pins.length > 0 ? (
+    {pins.length > 0 && loaded ? (
       <div className="pin-container">
         {pins.slice(0).reverse().map((pin) => (
           <div onClick={()=>navigate(`/pins/${pin.id}`)} key={pin.id} className="pin">

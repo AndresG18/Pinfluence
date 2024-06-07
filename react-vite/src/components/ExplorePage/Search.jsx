@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SearchContext } from '../../context/SearchContext';
 import { thunkGetAllPins } from '../../redux/pins';

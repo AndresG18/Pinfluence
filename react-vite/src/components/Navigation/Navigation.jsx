@@ -1,11 +1,11 @@
-import React, { useState, useContext } from 'react';
+import { useContext } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import ProfileButton from './ProfileButton';
 import './Navigation.css';
 import { FaPinterest, FaSearch } from 'react-icons/fa';
 import { AiOutlineMessage } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
-import { IoIosArrowDown } from 'react-icons/io';
+// import { IoIosArrowDown } from 'react-icons/io';
 import { thunkLogin } from '../../redux/session';
 import { SearchContext } from '../../context/SearchContext';
 
@@ -15,13 +15,13 @@ function Navigation() {
   const user = useSelector(state => state.session.user);
   const { query, setQuery } = useContext(SearchContext);
 
-  const login = () => {
-    const loginObj = {
-      "email": "demoUser@gmail.com",
-      "password": 'password123'
-    };
-    dispatch(thunkLogin(loginObj));
-  };
+  // const login = () => {
+  //   const loginObj = {
+  //     "email": "demoUser@gmail.com",
+  //     "password": 'password123'
+  //   };
+  //   dispatch(thunkLogin(loginObj));
+  // };
 
   const handleSearchChange = (e) => {
     setQuery(e.target.value);

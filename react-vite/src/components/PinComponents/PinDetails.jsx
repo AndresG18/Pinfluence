@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { thunkGetPin, thunkCreateComment, thunkDeleteComment, thunkDeletePin, thunkToggleLike } from "../../redux/pin";
 import { thunkGetUser, thunkToggleFollow } from "../../redux/session";
-import { FaPinterest, FaArrowRight, FaTrash, FaSave, FaEdit, FaPlus, } from 'react-icons/fa';
+import { FaPinterest, FaTrash,FaEdit} from 'react-icons/fa';
 import { IoSend } from "react-icons/io5";
 import { thunkGetUserBoards } from "../../redux/boards";
 import { thunkAddPinToBoard } from '../../redux/board';

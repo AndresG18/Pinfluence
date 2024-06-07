@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import { thunkGetBoard, thunkCreateBoard, thunkEditBoard } from '../../redux/board';
@@ -8,7 +8,6 @@ const BoardForm = ({ isEditing }) => {
   const { boardId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const board = useSelector(state => state.board.board);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [errors, setErrors] = useState({});
