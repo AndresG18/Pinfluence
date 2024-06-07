@@ -11,20 +11,38 @@ function LoginFormModal() {
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
 
+  const validateEmail = (email) => {
+    const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    return re.test(String(email).toLowerCase());
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    let validationErrors = {};
 
-    const serverResponse = await dispatch(
-      thunkLogin({
-        email,
-        password,
-      })
-    );
+    if (!validateEmail(email)) {
+      validationErrors.email = "Please enter a valid email address.";
+    }
 
-    if (serverResponse) {
-      setErrors(serverResponse);
+    if (password.length < 6) {
+      validationErrors.password = "Password must be at least 6 characters long.";
+    }
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
     } else {
-      closeModal();
+      const serverResponse = await dispatch(
+        thunkLogin({
+          email,
+          password,
+        })
+      );
+
+      if (serverResponse) {
+        setErrors(serverResponse);
+      } else {
+        closeModal();
+      }
     }
   };
 
@@ -54,6 +72,7 @@ function LoginFormModal() {
           />
         </label>
         {errors.password && <p className="modal-error">{errors.password}</p>}
+        {errors.message && <p className="modal-error">{errors.message}</p>}
         <button type="submit" className="modal-button">Log In</button>
       </form>
     </>
