@@ -1,0 +1,22 @@
+.splashPage > *{
+    width: 20%;
+    /* height: 20%; */
+    /* background-color: white; */
+    /* padding: 20px; */
+}
+.splashPage{
+    margin-top: 80px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+/* .splashPage{
+    background-image: url(https://pinfluence-2024.s3.us-east-2.amazonaws.com/splash.webp);
+} */
+
+.splashImage{
+    position: absolute;
+    width: 100%;
+    z-index:-2;
+}

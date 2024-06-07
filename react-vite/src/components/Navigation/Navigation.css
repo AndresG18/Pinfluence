@@ -120,7 +120,6 @@ border-radius: 50px;
 .header-out{
   display: flex;
   justify-content: space-between;
-  margin: 1.2rem 10px 0px 15px;
   padding-bottom: 10px;
 }
 .signup{
@@ -207,5 +206,15 @@ border-radius: 50px;
   /* align-items: center; */
   padding: 15px 20px;
   /* margin-bottom: 20px; */
+  
 }
-
+.header-out{
+  top: 0px;
+  z-index: 1;
+  margin-top: 0px;
+  padding: 15px;
+  margin-right: 10px;
+}
+.home-logo{
+  cursor: pointer;
+}

@@ -1,0 +1,19 @@
+.fname{
+    color: rgb(255, 255, 255);
+    font-size: 1rem;
+    font-weight: 600;
+    /* font-weight: 600; */
+    /* box-shadow: 1px 1px 1px 1px; */
+}
+.splashForm{
+    background-color: rgba(109, 109, 109, 0.544);
+    padding: 20px;
+    /* height: 10%; */
+    border-radius: 2rem;
+    justify-content: center;
+    align-items: center;
+}
+.spage{
+    color: rgb(255, 255, 255);
+    font-weight: 600;
+}

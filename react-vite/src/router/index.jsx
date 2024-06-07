@@ -11,14 +11,20 @@ import BoardForm from '../components/BoardComponents/BoardForm';
 import BoardUpdate from '../components/BoardComponents/BoardUpdate';
 import PinDetails from '../components/PinComponents/PinDetails';
 import BoardDetails from '../components/BoardComponents/BoardDetails';
+import Search from '../components/ExplorePage/Search';
 // import UserForm from '../components/UserComponents/UserForm';
 import UserPage from '../components/UserComponents/UserPage';
+import Splash from '../components/HomePage/Splash';
 export const router = createBrowserRouter([
   {
     element: <Layout />,
     children: [
       {
         path: "/",
+        element: <Splash/>,
+      },
+      {
+        path: "/home",
         element: <HomePage/>,
       },
       {
@@ -60,6 +66,10 @@ export const router = createBrowserRouter([
       {
         path: "/users/:userId",
         element: <UserPage/>,
+      },
+      {
+        path: "/search",
+        element: <Search />,
       },
     ],
   },

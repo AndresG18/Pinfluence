@@ -186,7 +186,7 @@ export default function PinDetails() {
           <span className="pin-name">{pin?.title}</span>
           <span className="pin-description">{pin?.description}</span>
           <div className="pin-user">
-            <img className="pfp-in" style={{ cursor: 'pointer'}} onClick={() => navigate(`/users/${pinOwner.id}`)} src={pinOwner?.profile_image} alt={pinOwner?.name} />
+            <img className="pfp-in" style={{ cursor: 'pointer'}} onClick={() => navigate(`/users/${pinOwner.id}`)} src={pinOwner?.profile_image ??'https://pinfluence-2024.s3.us-east-2.amazonaws.com/pinfluence_pfp.webp'} alt={pinOwner?.name} />
             <div className="nameAndFollowers">
               <span className="pin-owner-name">{pinOwner?.username}</span>
               <span>{pinOwner?.followers?.length} followers</span>

@@ -1,6 +1,8 @@
 
 import { useNavigate } from "react-router-dom";
 import { FaPinterest } from "react-icons/fa";
+import './PInList.css'
+import '../HomePage/HomePage.css'
 const PinList = ({ pins }) => {
   const navigate = useNavigate();
 
