@@ -21,6 +21,7 @@ function LoginFormModal() {
       "password":'password123'
     }
   dispatch(thunkLogin(loginObj))
+  closeModal()
   }
   const handleSubmit = async (e) => {
     e.preventDefault();
