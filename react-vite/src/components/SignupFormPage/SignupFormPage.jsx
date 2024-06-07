@@ -4,7 +4,7 @@ import { thunkSignup } from "../../redux/session";
 import { OpenModalButtonLogin } from '../OpenModalButton/OpenModalButton';
 import LoginFormModal from "../LoginFormModal";
 import "./SignupForm.css";
-
+import { NavLink } from "react-router-dom";
 function SignupFormPage() {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
@@ -61,7 +61,8 @@ function SignupFormPage() {
 
   return (
     <div className="splashForm">
-      <h1 className="modal-title spage">Sign Up</h1>
+      <NavLink to='/home' style={{backgroundColor:'black',color:'white'}} className="header-link">Explore Ideas</NavLink>
+      <h1 className="modal-title spage" style={{margin:'0px'}}>Sign Up</h1>
       {errors.server && <p className="modal-error">{errors.server}</p>}
       <form onSubmit={handleSubmit} className="modal-form">
         <label className="modal-label fname">
@@ -109,7 +110,7 @@ function SignupFormPage() {
         </label>
         {errors.confirmPassword && <p className="modal-error">{errors.confirmPassword}</p>}
         <button type="submit" className="modal-button">Sign Up</button>
-        <div className="fname">or...</div>
+        <div className="fname" style={{alignSelf:'center'}} >Already have an account ?</div>
       </form>
         <OpenModalButtonLogin
           buttonText="Log in"

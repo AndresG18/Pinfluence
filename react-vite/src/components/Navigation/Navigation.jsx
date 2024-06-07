@@ -54,11 +54,13 @@ function Navigation() {
           <FaPinterest className="logo" />
           <h2 className="nav-header">Influence</h2>
         </div>
+        
         <div>
           <ProfileButton />
         </div>
       </div>
-      <button className="login demo" style={{marginTop:'5px'}} onClick={login}>Login as DemoUser</button>
+      
+      {/* <button className="login demo" style={{marginTop:'5px'}} onClick={login}>Login as DemoUser</button> */}
     </div>
   );
 
