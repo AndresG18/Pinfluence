@@ -104,10 +104,11 @@ export default function UserPage() {
             </button>
           )}
           { activeTab === "created" && createdPins.length > 0 ? (
-            <>{ currUser.id == user.id &&
+            <>{ currUser.id === user.id ?
               <button onClick={() => navigate('/pins/new')} className="create-board-button">
                 Create a pin +
               </button>
+              : null
             }
             <div className="pin-container" style={{margin:'0px'}}>
               {createdPins.map((pin) => (
