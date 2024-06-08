@@ -103,11 +103,12 @@ export default function UserPage() {
               Add a Board +
             </button>
           )}
-          {activeTab === "created" && createdPins.length > 0 ? (
-            <>
+          { activeTab === "created" && createdPins.length > 0 ? (
+            <>{ currUser.id == user.id &&
               <button onClick={() => navigate('/pins/new')} className="create-board-button">
                 Create a pin +
               </button>
+            }
             <div className="pin-container" style={{margin:'0px'}}>
               {createdPins.map((pin) => (
                 <div key={pin.id} className="pin" onClick={() => handlePinClick(pin.id)}>
