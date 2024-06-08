@@ -2,7 +2,7 @@ import  { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import { thunkGetBoard, thunkDeleteBoard, thunkRemovePinFromBoard } from '../../redux/board';
-import { FaEdit, FaTrash } from 'react-icons/fa';
+import { FaEdit, FaTrash , FaPinterest} from 'react-icons/fa';
 import './BoardDetails.css';
 
 const BoardDetails = () => {
@@ -74,7 +74,10 @@ const BoardDetails = () => {
           </div>
         </>
       ) : (
-        <div className="loading">Loading...</div>
+        <div className="loading-container">
+        <div className="loading-spinner"></div>
+        <FaPinterest style={{ color: '#E60023', fontSize: '2rem' }} />
+      </div>
       )}
     </div>
   );

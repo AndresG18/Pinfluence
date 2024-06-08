@@ -6,7 +6,7 @@ import { thunkGetUser, thunkToggleFollow } from "../../redux/session";
 import BoardList from "../BoardComponents/BoardList";
 import "./UserPage.css";
 import PinList from "../PinComponents/PinList";
-
+import { FaPinterest } from "react-icons/fa";
 export default function UserPage() {
   const { userId } = useParams();
   const dispatch = useDispatch();
@@ -61,7 +61,7 @@ export default function UserPage() {
     setFollowing((prev) => !prev);
   };
 
-  return (
+  return user ? (
     <div className="user-page">
       {loaded ? (
         <>
@@ -133,8 +133,11 @@ export default function UserPage() {
           )}
         </>
       ) : (
-        <div className="loading">Loading...</div>
+        <div className="loading-container">
+        <div className="loading-spinner"></div>
+        <FaPinterest style={{ color: '#E60023', fontSize: '2rem' }} />
+      </div>
       )}
     </div>
-  );
+  ) : null;
 }

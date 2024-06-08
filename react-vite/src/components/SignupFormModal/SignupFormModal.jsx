@@ -12,7 +12,7 @@ function SignupFormModal() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
-
+  console.log(errors,'<<========')
   const validateForm = () => {
     const newErrors = {};
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -43,10 +43,10 @@ function SignupFormModal() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setErrors({})
     if (!validateForm()) return;
 
-    const serverResponse = await dispatch(
+    const response = await dispatch(
       thunkSignup({
         email,
         username,
@@ -54,17 +54,17 @@ function SignupFormModal() {
       })
     );
 
-    if (serverResponse) {
-      setErrors(serverResponse);
-    } else {
-      closeModal();
+    if(response.errors){
+      setErrors(response.errors)
+    }else{
+      closeModal()
     }
   };
 
   return (
     <>
       <h1 className="modal-title">Sign Up</h1>
-      {errors.server && <p className="modal-error">{errors.server}</p>}
+      {/* {errors.server && <p className="modal-error">{errors.server}</p>} */}
       <form onSubmit={handleSubmit} className="modal-form">
         <label className="modal-label">
           Email
@@ -108,8 +108,8 @@ function SignupFormModal() {
             required
             className="modal-input"
           />
-        </label>
         {errors.confirmPassword && <p className="modal-error">{errors.confirmPassword}</p>}
+        </label>
         <button type="submit" className="modal-button">Sign Up</button>
       </form>
     </>

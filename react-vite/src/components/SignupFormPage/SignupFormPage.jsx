@@ -44,9 +44,10 @@ function SignupFormPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setErrors({})
     if (!validateForm()) return;
 
-    const serverResponse = await dispatch(
+    const response = await dispatch(
       thunkSignup({
         email,
         username,
@@ -54,16 +55,15 @@ function SignupFormPage() {
       })
     );
 
-    if (serverResponse) {
-      setErrors(serverResponse);
-    }
+   if(response.errors) setErrors(response.errors)
+   else return
   };
 
   return (
     <div className="splashForm">
       <NavLink to='/home' style={{backgroundColor:'black',color:'white'}} className="header-link">Explore Ideas</NavLink>
       <h1 className="modal-title spage" style={{margin:'0px'}}>Sign Up</h1>
-      {errors.server && <p className="modal-error">{errors.server}</p>}
+      {/* {errors.server && <p className="modal-error">{errors.server}</p>} */}
       <form onSubmit={handleSubmit} className="modal-form">
         <label className="modal-label fname">
           Email
@@ -97,7 +97,7 @@ function SignupFormPage() {
             className="modal-input"
           />
         </label>
-        {errors.password && <p className="modal-error fname">{errors.password}</p>}
+        {errors.password && <p className="modal-error ">{errors.password}</p>}
         <label className="modal-label fname">
           Confirm Password
           <input

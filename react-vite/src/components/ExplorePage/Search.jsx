@@ -11,6 +11,8 @@ const Search = () => {
   const dispatch = useDispatch();
   const [filteredPins, setFilteredPins] = useState([]);
   const pins = useSelector(state => state.pins.allPins);
+//   const [usersTab,setUsersTab] = useState(false)
+//   const [pinsTab,setPinsTab] = useState(true)
 
   useEffect(() => {
     if(query.trim().length < 1) navigate('/home')
