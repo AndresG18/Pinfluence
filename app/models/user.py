@@ -37,7 +37,10 @@ class User(db.Model, UserMixin):
     @password.setter
     def password(self, password):
         self.hashed_password = generate_password_hash(password)
-    
+    def get_user_following(self):
+        return [follow.to_dict() for follow in self.following]
+    def get_user_followers(self):
+        return [follow.to_dict() for follow in self.followers]
     def get_liked(self):
         return [like.to_dict() for like in self.pin_likes]
     def get_saved(self):
@@ -60,5 +63,7 @@ class User(db.Model, UserMixin):
             'email': self.email,
             'username': self.username,
             'private': self.private,
-            'likes' : self.get_liked()
+            'likes' : self.get_liked(),
+            'following':self.get_user_following(),
+            'followers':self.get_user_followers()
         }

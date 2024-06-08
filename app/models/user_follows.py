@@ -13,3 +13,9 @@ class UserFollow(db.Model):
 
     follower = db.relationship('User', foreign_keys=[follower_id], back_populates='following')
     followed = db.relationship('User', foreign_keys=[followed_id], back_populates='followers')
+    
+    def to_dict(self):
+        return{
+            'follower_id' : self.follower_id,
+            'followed_id' :self.followed_id
+        }

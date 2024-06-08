@@ -87,3 +87,16 @@
     color: #333;
   }
   
+  .tabs{
+    justify-content: center;
+    gap: 20px;
+    margin: 0px;
+  }
+  .users-container{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: start;
+    margin-left: 35%;
+    margin-top: 20px;
+  }
