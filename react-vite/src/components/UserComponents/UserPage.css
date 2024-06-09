@@ -39,6 +39,7 @@
   font-size: 18px;
   border-bottom: 2px solid transparent;
   transition: border-bottom 0.3s ease;
+  /* margin-bottom: 10px; */
 }
 
 
@@ -56,6 +57,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 20px;
+  margin-top: 10px;
 }
 
 .board {

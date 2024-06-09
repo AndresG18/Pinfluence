@@ -110,7 +110,7 @@ export default function UserPage() {
               </button>
               : null
             }
-            <div className="pin-container" style={{margin:'0px'}}>
+            <div className="pin-container" style={{margin:'0px',marginTop:'10px'}}>
               {createdPins.map((pin) => (
                 <div key={pin.id} className="pin" onClick={() => handlePinClick(pin.id)}>
                   <img src={pin.content_url} alt={pin.title} className="pin-image" />
