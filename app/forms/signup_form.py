@@ -7,14 +7,14 @@ from app.api.AWS import ALLOWED_EXTENSIONS
 
 def user_exists(form, field):
     email = field.data
-    user = User.query.filter(User.email.lower() == email.lower()).first()
+    user = User.query.filter(User.email == email).first()
     if user:
         raise ValidationError('Email address is already in use.')
 
 
 def username_exists(form, field):
     username = field.data
-    user = User.query.filter(User.username.lower() == username.lower()).first()
+    user = User.query.filter(User.username == username).first()
     if user:
         raise ValidationError('Username is already in use.')
 
