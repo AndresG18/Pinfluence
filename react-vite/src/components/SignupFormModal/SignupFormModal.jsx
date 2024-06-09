@@ -23,8 +23,8 @@ function SignupFormModal() {
       newErrors.email = "Email is invalid";
     }
 
-    if (!username.trim().length > 3 || username.trim().length > 15) {
-      newErrors.username = "Username must be at least 3 and 20 characters";
+    if (username.trim().length < 3 || username.trim().length > 20) {
+      newErrors.username = "Username must be between 3 and 20 characters";
     }
 
     if (!password.trim()) {
