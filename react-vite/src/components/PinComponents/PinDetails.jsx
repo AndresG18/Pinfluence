@@ -64,8 +64,8 @@ export default function PinDetails() {
     dispatch(thunkCreateComment(pinId, commentObj)).then(() => {
       dispatch(thunkGetPin(pinId)).then((data) => {
         setComments(data.comments);
+        setComment('');
       });
-      setComment('');
     });
   };
 
@@ -73,8 +73,8 @@ export default function PinDetails() {
     dispatch(thunkDeleteComment(pinId, id)).then(() => {
       dispatch(thunkGetPin(pinId)).then((data) => {
         setComments(data.comments);
+        setComment('');
       });
-      setComment('');
     });
   };
 

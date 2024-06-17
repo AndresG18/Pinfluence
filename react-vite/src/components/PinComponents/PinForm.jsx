@@ -179,7 +179,7 @@ const PinForm = () => {
         <p style={{margin:'0px'}}>or...</p>
         <button onClick={scrollToBoardForm} className='signup'>Create a board</button>
       </div>
-      <div style={{margin:'9rem'}} ref={boardFormRef}>
+      <div className='board-f' style={{margin:'9rem'}} ref={boardFormRef}>
         <BoardForm />
       </div>
     </>
