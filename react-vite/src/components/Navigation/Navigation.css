@@ -156,8 +156,11 @@ border-radius: 50px;
   background-color: #d0001d;
   color: white;
 }
+.header-out h2{
+  padding: 5px;
+}
 
-@media screen and (max-width:1200px){
+@media screen and (max-width:900px){
   .logo ,.message-icon{
     flex-basis: 70px;
   }
@@ -208,6 +211,7 @@ border-radius: 50px;
   /* margin-bottom: 20px; */
   
 }
+
 .header-out{
   top: 0px;
   z-index: 1;
@@ -219,6 +223,7 @@ border-radius: 50px;
 }
 .home-logo{
   cursor: pointer;
+
 }
 .back-button{
   margin-top: 10px;
@@ -274,7 +279,7 @@ border-radius: 50px;
   }
 }
 
-@media screen and (max-width:1200px){
+@media screen and (max-width:900px){
   .logo ,.message-icon{
     flex-basis: 70px;
     padding: 0px;
@@ -300,6 +305,7 @@ border-radius: 50px;
     flex-basis: 200px;
     font-size: 2rem;
   }
+
   .profile-button{
     height: 2rem;
   }

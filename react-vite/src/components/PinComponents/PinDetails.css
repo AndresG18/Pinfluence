@@ -327,7 +327,7 @@
   font-weight: 600;
   /* font-style: italic; */
 }
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 900px) {
   .pin-box {
     width:100%;
     flex-direction: column;
