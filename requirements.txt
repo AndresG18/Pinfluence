@@ -27,3 +27,4 @@ werkzeug==2.2.2; python_version >= '3.7'
 wtforms==3.0.1; python_version >= '3.7'
 zipp==3.17.0; python_version >= '3.8'
 eventlet==0.33.0  # Added for WebSocket support with Flask-SocketIO
+gevent==21.12.0
