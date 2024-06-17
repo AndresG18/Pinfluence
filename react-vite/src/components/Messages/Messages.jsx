@@ -108,7 +108,7 @@ export default function Messages() {
         });
         if (response.ok) {
             const newMessage = await response.json();
-            setMessages(messages => [...messages, newMessage]);
+            // setMessages(messages => [...messages, newMessage]);
             setChatInput("");
         }
     };
