@@ -3,8 +3,7 @@ import os
 
 if os.environ.get('FLASK_ENV') == 'production':
     origins = [
-        'http://your-production-url',
-        'https://your-production-url'
+        "https://pinfluence-e4ch.onrender.com"
     ]
 else:
     origins = "*"

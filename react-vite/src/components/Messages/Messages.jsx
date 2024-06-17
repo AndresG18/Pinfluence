@@ -36,7 +36,7 @@ export default function Messages() {
 
         fetchUsers();
 
-        const url = import.meta.env.MODE === 'development' ? "http://127.0.0.1:8000" : "http://pinfluence-e4ch.onrender.com";
+        const url = import.meta.env.MODE === 'development' ? "http://127.0.0.1:8000" : "https://pinfluence-e4ch.onrender.com";
         socket = io(url);
 
         socket.on("chat", (data) => {
