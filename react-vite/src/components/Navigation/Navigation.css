@@ -289,6 +289,13 @@ border-radius: 50px;
   .header{
     padding-left: 0px;
   }
+  .header-out{
+    width: 95%;
+  }
+  .header-out h2{
+    padding: 5px;
+  }
+
   .logo ,.message-icon{
     flex-basis: 200px;
     font-size: 2rem;
