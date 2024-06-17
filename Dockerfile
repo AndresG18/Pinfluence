@@ -9,6 +9,10 @@ ARG FLASK_ENV
 ARG DATABASE_URL
 ARG SCHEMA
 ARG SECRET_KEY
+ARG S3_BUCKET
+ARG S3_KEY
+ARG S3_SECRET
+ARG OPEN_EMOJI_API_KEY
 
 WORKDIR /var/www
 
@@ -19,6 +23,7 @@ RUN pip install psycopg2
 
 COPY . .
 
-RUN flask db upgrade
+RUN flask db downgrade base
+RUN flask db upgrade head
 RUN flask seed all
-CMD gunicorn --worker-class eventlet -w 1 app:app
+CMD gunicorn -k gevent -w 1 app:app
