@@ -1,20 +1,20 @@
-from flask import Blueprint, request
+# app/api/message_routes.py
+from flask import Blueprint, request, jsonify
 from app.models import db, Message
 from flask_login import login_required, current_user
 from app.forms import MessageForm
+from app.socket import socketio
 
 message_routes = Blueprint('messages', __name__)
 
-@message_routes.route('')
+@message_routes.route('/<int:user_id>', methods=['GET'])
 @login_required
-def get_messages():
-    received_messages = Message.query.filter_by(recipient_id=current_user.id).all()
-    sent_messages = Message.query.filter_by(sender_id=current_user.id).all()
-    return {
-        "received": [message.to_dict() for message in received_messages],
-        "sent": [message.to_dict() for message in sent_messages]
-    }
-# Get all messages for user
+def get_user_messages(user_id):
+    messages = Message.query.filter(
+        ((Message.sender_id == current_user.id) & (Message.recipient_id == user_id)) |
+        ((Message.sender_id == user_id) & (Message.recipient_id == current_user.id))
+    ).order_by(Message.timestamp.asc()).all()
+    return jsonify({"messages": [message.to_dict() for message in messages]})
 
 @message_routes.route('/new', methods=['POST'])
 @login_required
@@ -29,19 +29,10 @@ def send_message():
         )
         db.session.add(message)
         db.session.commit()
-        return message.to_dict(), 201
-    return {"errors": form.errors}, 400
-# Send a message
+        print(message)
+        message_data = message.to_dict()
+        message_data['timestamp'] = message_data['timestamp'].isoformat()
+        socketio.emit('chat', message_data)
 
-@message_routes.route('/<int:message_id>/delete', methods=['DELETE'])
-@login_required
-def delete_message(message_id):
-    message = Message.query.get(message_id)
-    if not message:
-        return {"message": "Message not found"}, 404
-    if message.sender_id != current_user.id and message.recipient_id != current_user.id:
-        return {"message": "Forbidden"}, 403
-    db.session.delete(message)
-    db.session.commit()
-    return {"message": "Message successfully deleted"}, 200
-# Delete message by ID
+        return message_data, 201
+    return {"errors": form.errors}, 400

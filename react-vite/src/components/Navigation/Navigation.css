@@ -235,18 +235,15 @@ border-radius: 50px;
   font-size: 12px;
 }
   .searchBar {
-    width: 20%;
+    /* width: 30%; */
     /* padding-left: 20px; */
     /* padding: 0px; */
-    padding: 5px;
+    /* padding: 0px; */
     /* margin: auto; */
     /* font-size: ; */
     margin: 0px;
   }
-  .search{
-    padding: 0px;
-    margin: 0px;
-  }
+  
   .search:focus{
     width: 45vw;
     margin-left: -42px;

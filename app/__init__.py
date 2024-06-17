@@ -1,3 +1,5 @@
+from gevent import monkey
+monkey.patch_all()
 import os
 from flask import Flask, render_template, request, session, redirect
 from flask_cors import CORS
@@ -12,6 +14,7 @@ from .api.board_routes import board_routes
 from .api.message_routes import message_routes
 from .seeds import seed_commands
 from .config import Config
+from .socket import socketio  # Ensure socketio is properly imported
 
 app = Flask(__name__, static_folder='../react-vite/dist', static_url_path='/')
 
@@ -35,6 +38,9 @@ app.register_blueprint(message_routes, url_prefix='/api/messages')
 
 db.init_app(app)
 Migrate(app, db)
+
+# Initialize SocketIO with appropriate async mode
+socketio.init_app(app, async_mode='gevent')  
 
 # Application Security
 CORS(app)
@@ -79,3 +85,7 @@ def react_root(path):
 @app.errorhandler(404)
 def not_found(e):
     return app.send_static_file('index.html')
+
+if __name__ == '__main__':
+    # Use socketio.run instead of app.run to start the Flask-SocketIO server
+    socketio.run(app, debug=True, port=8000)
