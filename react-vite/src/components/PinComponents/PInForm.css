@@ -9,6 +9,7 @@
     width: 60%;
     margin: 20px auto;
     margin-top: 70px;
+    margin-bottom: 400px;
   }
   
   .pin-form-header {
@@ -141,3 +142,9 @@
     margin-top: 20px;
   }
   
+  @media screen and (max-width:1200px){
+    .pin-form-container{
+      width: 85%;
+    }
+
+  }
