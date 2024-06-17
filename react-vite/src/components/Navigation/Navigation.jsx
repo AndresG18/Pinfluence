@@ -44,7 +44,7 @@ function Navigation() {
           onChange={handleSearchChange}
         />
       </div>
-      <AiOutlineMessage onClick={() => window.alert('Feature Coming Soon!')} className="message-icon" />
+      <AiOutlineMessage onClick={() => navigate('/messages')} className="message-icon" />
       <ProfileButton />
     </div>
   ) : (

@@ -15,6 +15,7 @@ import Search from '../components/ExplorePage/Search';
 // import UserForm from '../components/UserComponents/UserForm';
 import UserPage from '../components/UserComponents/UserPage';
 import Splash from '../components/HomePage/Splash';
+import Messages from '../components/Messages/Messages';
 export const router = createBrowserRouter([
   {
     element: <Layout />,
@@ -71,6 +72,10 @@ export const router = createBrowserRouter([
         path: "/search",
         element: <Search />,
       },
+      {
+        path:'/messages',
+        element:<Messages/>
+      }
     ],
   },
 ]);

@@ -220,3 +220,39 @@ border-radius: 50px;
 .home-logo{
   cursor: pointer;
 }
+
+@media screen and (max-width: 1200px) {
+  .logo,
+  .message-icon {
+    flex-basis: 70px;
+  }
+
+  .header-link {
+    flex-basis: 0;
+  }
+
+  .searchBar {
+    width: 50%;
+  }
+  .search:focus{
+    width: 45vw;
+    margin-left: -42px;
+    /* margin-left: 10px; */
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .logo,
+  .message-icon {
+    flex-basis: 120px;
+  }
+
+  .header-link {
+    flex-basis: 0;
+  }
+
+  /* .searchBar {
+    width: 40%;
+  } */
+}
+

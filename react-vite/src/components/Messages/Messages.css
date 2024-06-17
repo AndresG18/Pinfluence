@@ -1,0 +1,218 @@
+/* Messages.css */
+.Messages {
+    background-color: #ffffff00;
+    width: 90%;
+    margin: auto;
+    margin-top: 80px;
+    display: flex;
+    padding: 10px;
+    gap: 20px;
+    box-shadow: 3px 3px 3px 5px rgba(0, 0, 0, 0.068);
+    border-radius: 1rem;
+    transition: all 0.3s ease-in-out;
+}
+
+.message-user {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 12px;
+    text-align: center;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.272);
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.message-user:hover {
+    background-color: #ececec;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+.user-link {
+    text-decoration: none;
+    color: black;
+    width: 100%;
+}
+
+.chat {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    position: relative;
+}
+
+.active-user {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 3px rgb(0, 0, 0);
+}
+
+.pfp-in-large {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.messages-container {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    padding-right: 10px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    min-height: calc(85vh - 200px);
+    max-height: calc(85vh - 200px);
+}
+
+.message-wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.sent-wrapper {
+    justify-content: flex-end;
+}
+
+.received-wrapper {
+    justify-content: flex-start;
+}
+
+.message {
+    max-width: 60%;
+    word-wrap: break-word;
+    border-radius: 10px;
+    padding: 7px 10px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    margin: 5px 0;
+}
+
+.sent {
+    background-color: #000000c5;
+    color: rgb(255, 255, 255);
+}
+
+.received {
+    background-color: #e5e5ea9e;
+}
+
+.message-profile-image {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    margin: 0 8px;
+}
+
+.message-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.chat-form {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    align-items: center;
+}
+
+.chat-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #cccccc;
+    border-radius: 20px;
+    outline: none;
+    font-size: 16px;
+    background-color: #f9f9f9;
+}
+
+.send-button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #e03333;
+    color: white;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.send-button:hover {
+    background-color: #cf0d0d;
+}
+
+.user-link.active > * {
+    background-color: #101010ce;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    color: white;
+}
+
+.messages-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.back-arrow {
+    cursor: pointer;
+    margin-right: 10px;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    margin-left: 20px;
+}
+
+.active-user-info{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    height: 2rem;
+    margin-bottom: 15px;
+    margin-left: 20px;
+}
+
+.users {
+    overflow-y: scroll;
+    max-height: 700px;
+    width: 350px;
+    transition: all 0.3s ease-in-out;
+}
+
+.users.hidden {
+    display: none;
+}
+.Messages {
+    flex-direction: column-reverse;
+    align-items: center;
+}
+.chat {
+    width: 100%;
+}
+.users {
+    width: 100%;
+}

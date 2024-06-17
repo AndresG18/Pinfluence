@@ -24,7 +24,7 @@ const Search = () => {
   const getAllUsers = async () => {
     const response = await fetch('/api/users');
     const data = await response.json();
-    return data.users; // Assuming the API returns a 'users' key with the array of users
+    return data.users;
   };
 
   useEffect(() => {
