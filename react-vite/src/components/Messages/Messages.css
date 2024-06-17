@@ -10,6 +10,7 @@
     box-shadow: 3px 3px 3px 5px rgba(0, 0, 0, 0.068);
     border-radius: 1rem;
     transition: all 0.3s ease-in-out;
+    max-height:85vh;
 }
 
 .message-user {
@@ -211,7 +212,7 @@
     align-items: center;
 }
 .chat {
-    width: 100%;
+    width: 90%;
 }
 .users {
     width: 100%;

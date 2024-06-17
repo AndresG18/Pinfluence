@@ -322,6 +322,11 @@
 /* .last-comment { */
   /* margin-bottom: 2.5rem; */
 /* } */
+.back-button{
+  font-size:2rem;
+  font-weight: 1000;
+  /* font-style: italic; */
+}
 @media screen and (max-width: 1200px) {
   .pin-box {
     width:100%;

@@ -122,11 +122,12 @@
   }
   @media screen and (max-width:1200px){
     .board-f{
-      width: 400px;
+      /* width: 400px; */
       /* margin-right: 100px; */
     }
     .board-form-container{
-      margin-right: 100px;
-      margin-left: -100px;
+      margin-right: 480px;
+      margin-left: -130px;
+      width: 310px;
     }
   }
