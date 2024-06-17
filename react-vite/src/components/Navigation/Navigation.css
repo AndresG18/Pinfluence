@@ -224,15 +224,28 @@ border-radius: 50px;
 @media screen and (max-width: 1200px) {
   .logo,
   .message-icon {
-    flex-basis: 70px;
+    font:2000px;
   }
 
   .header-link {
     flex-basis: 0;
   }
-
+.header-link{
+  /* padding: 0px; */
+  font-size: 12px;
+}
   .searchBar {
-    width: 50%;
+    width: 20%;
+    /* padding-left: 20px; */
+    /* padding: 0px; */
+    padding: 5px;
+    /* margin: auto; */
+    /* font-size: ; */
+    margin: 0px;
+  }
+  .search{
+    padding: 0px;
+    margin: 0px;
   }
   .search:focus{
     width: 45vw;
@@ -241,18 +254,22 @@ border-radius: 50px;
   }
 }
 
-@media screen and (max-width: 700px) {
-  .logo,
-  .message-icon {
-    flex-basis: 120px;
+@media screen and (max-width:1200px){
+  .logo ,.message-icon{
+    flex-basis: 70px;
   }
-
-  .header-link {
+  .header-link{
     flex-basis: 0;
   }
 
-  /* .searchBar {
-    width: 40%;
-  } */
+}
+@media screen and (max-width:700px){
+  .logo ,.message-icon{
+    flex-basis: 120px;
+  }
+  .header-link{
+    flex-basis: 0;
+  }
+
 }
 
