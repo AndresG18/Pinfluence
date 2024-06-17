@@ -19,6 +19,46 @@ export default function Messages() {
     const messagesEndRef = useRef(null);
     const navigate = useNavigate();
 
+    useEffect(() => {
+        if (!user) {
+            navigate('/');
+            return;
+        }
+
+        const fetchUsers = async () => {
+            const allUsers = await getAllUsers();
+            const filteredUsers = allUsers.filter(u =>
+                user.following.some(f => f.followed_id === u.id) ||
+                user.followers.some(f => f.follower_id === u.id)
+            );
+            setUsers(filteredUsers);
+        };
+
+        fetchUsers();
+
+        const url = import.meta.env.MODE === 'development' ? "http://127.0.0.1:8000" : "https://pinfluence-e4ch.onrender.com";
+        socket = io(url);
+
+        socket.on("chat", (data) => {
+            console.log(`Received message: ${data.content}`);
+            setMessages(messages => [...messages, data]);
+        });
+
+        return () => {
+            if (socket) socket.disconnect();
+        };
+    }, [user, navigate]);
+
+    useEffect(() => {
+        if (activeID) {
+            fetchMessages(activeID);
+        }
+    }, [activeID]);
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
+
     const getAllUsers = async () => {
         const response = await fetch('/api/users');
         const data = await response.json();
@@ -45,36 +85,6 @@ export default function Messages() {
         setActiveUser(null);
         setActiveID('');
     };
-
-    useEffect(() => {
-        if (!user) navigate('/');
-        const fetchUsers = async () => {
-            const allUsers = await getAllUsers();
-            const filteredUsers = allUsers.filter(u =>
-                user.following.some(f => f.followed_id === u.id) ||
-                user.followers.some(f => f.follower_id === u.id)
-            );
-            setUsers(filteredUsers);
-        };
-        fetchUsers();
-
-        const url = import.meta.env.MODE === 'development' ? "http://127.0.0.1:8000" : "https://pinfluence-e4ch.onrender.com";
-        socket = io(url);
-
-        socket.on("chat", (data) => {
-            console.log(`Received message: ${data.content}`);
-            setMessages(messages => [...messages, data]);
-        });
-
-        return () => {
-            socket.disconnect();
-        };
-    }, [user]);
-
-    useEffect(() => {
-        if (!user) navigate('/');
-        scrollToBottom();
-    }, [messages]);
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
