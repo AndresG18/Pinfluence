@@ -88,4 +88,3 @@ export const router = createBrowserRouter([
 // view profile
 // edit profile form
 //view board
-// watever else is needed
