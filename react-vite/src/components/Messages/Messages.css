@@ -1,16 +1,16 @@
 /* Messages.css */
 .Messages {
     background-color: #ffffff00;
-    width: 90%;
+    width:90%;
     margin: auto;
-    margin-top: 80px;
+    margin-top: 85px;
     display: flex;
     padding: 10px;
     gap: 20px;
     box-shadow: 3px 3px 3px 5px rgba(0, 0, 0, 0.068);
     border-radius: 1rem;
     transition: all 0.3s ease-in-out;
-    max-height:85vh;
+    max-height:80vh;
 }
 
 .message-user {

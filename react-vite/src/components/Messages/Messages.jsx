@@ -135,9 +135,9 @@ export default function Messages() {
             <div className="chat">
                 {active ? (
                     <div>
-                        <FontAwesomeIcon icon={faArrowLeft} className="back-arrow" onClick={handleBackClick} />
                         {activeUser && (
                             <div className="active-user-info">
+                                <FontAwesomeIcon style={{marginLeft:' -5%'}} icon={faArrowLeft} className="back-arrow" onClick={handleBackClick} />
                                 <img src={activeUser.profile_image ?? 'https://pinfluence-2024.s3.us-east-2.amazonaws.com/pinfluence_pfp.webp'} className='pfp-in-large' />
                                 <h2>{activeUser.username}</h2>
                             </div>
@@ -173,7 +173,9 @@ export default function Messages() {
                                 className="chat-input"
                                 placeholder="Type a message..."
                             />
-                            <button type="submit" className="send-button">Send</button>
+                            {
+                                chatInput.length > 0 &&<button type="submit" className="send-button">Send</button>
+                            }
                         </form>
                     </div>
                 ) : (
