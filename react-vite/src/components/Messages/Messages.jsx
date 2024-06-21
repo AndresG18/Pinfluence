@@ -27,11 +27,16 @@ export default function Messages() {
 
         const fetchUsers = async () => {
             const allUsers = await getAllUsers();
-            const filteredUsers = allUsers.filter(u =>
-                user.following.some(f => f.followed_id === u.id) ||
-                user.followers.some(f => f.follower_id === u.id)
+            const filteredUsers = await Promise.all(
+                allUsers.filter(u =>
+                    user.following.some(f => f.followed_id === u.id) ||
+                    user.followers.some(f => f.follower_id === u.id)
+                ).map(async (u) => {
+                    const lastMessageTime = await getLastMessageTime(u.id);
+                    return { ...u, lastMessageTime };
+                })
             );
-            setUsers(filteredUsers);
+            setUsers(sortUsersByLastMessage(filteredUsers));
         };
 
         fetchUsers();
@@ -41,7 +46,11 @@ export default function Messages() {
 
         socket.on("chat", (data) => {
             console.log(`Received message: ${data.content}`);
-            setMessages(messages => [...messages, data]);
+            setMessages(prevMessages => {
+                const updatedMessages = [...prevMessages, data];
+                sortUsers();
+                return updatedMessages;
+            });
         });
 
         return () => {
@@ -65,6 +74,12 @@ export default function Messages() {
         return data.users;
     };
 
+    const getLastMessageTime = async (userId) => {
+        const response = await fetch(`/api/messages/${userId}`);
+        const data = await response.json();
+        return data.messages.length > 0 ? new Date(data.messages[data.messages.length - 1].timestamp) : new Date(0);
+    };
+
     const handleUserClick = async (userId) => {
         setActiveID(userId);
         setActive(true);
@@ -78,6 +93,7 @@ export default function Messages() {
         const data = await response.json();
         setMessages(data.messages);
         scrollToBottom();
+        sortUsers();
     };
 
     const handleBackClick = () => {
@@ -87,7 +103,7 @@ export default function Messages() {
     };
 
     const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        messagesEndRef.current?.scrollIntoView({});
     };
 
     const updateChatInput = (e) => {
@@ -108,22 +124,36 @@ export default function Messages() {
         });
         if (response.ok) {
             const newMessage = await response.json();
-            // setMessages(messages => [...messages, newMessage]);
+            setMessages(prevMessages => [...prevMessages, newMessage]);
             setChatInput("");
+            sortUsers();
         }
     };
 
-    const sortedUsers = users.sort((a, b) => {
-        const aLastMessage = messages.filter(m => m.sender_id === a.id || m.recipient_id === a.id).pop();
-        const bLastMessage = messages.filter(m => m.sender_id === b.id || m.recipient_id === b.id).pop();
-        return new Date(bLastMessage?.timestamp) - new Date(aLastMessage?.timestamp);
-    });
+    const sortUsersByLastMessage = (usersToSort) => {
+        return usersToSort.sort((a, b) => b.lastMessageTime - a.lastMessageTime);
+    };
+
+    const sortUsers = async () => {
+        const updatedUsers = await Promise.all(
+            users.map(async (u) => {
+                const lastMessageTime = await getLastMessageTime(u.id);
+                return { ...u, lastMessageTime };
+            })
+        );
+        setUsers(sortUsersByLastMessage(updatedUsers));
+    };
+
+    const filteredMessages = messages.filter(message =>
+        (message.sender_id === user.id && message.recipient_id === activeID) ||
+        (message.sender_id === activeID && message.recipient_id === user.id)
+    );
 
     return (
         <div className="Messages">
             <div className={`users ${active ? 'hidden' : ''}`}>
                 <h2>Messages</h2>
-                {sortedUsers.map(u => (
+                {users.map(u => (
                     <div key={u.id} onClick={() => handleUserClick(u.id)} className={`user-link ${activeID === u.id ? 'active' : ''}`}>
                         <div className='message-user'>
                             <img src={u?.profile_image ?? 'https://pinfluence-2024.s3.us-east-2.amazonaws.com/pinfluence_pfp.webp'} className='pfp-in' />
@@ -137,13 +167,13 @@ export default function Messages() {
                     <div>
                         {activeUser && (
                             <div className="active-user-info">
-                                <FontAwesomeIcon style={{marginLeft:' -5%'}} icon={faArrowLeft} className="back-arrow" onClick={handleBackClick} />
+                                <FontAwesomeIcon style={{ marginLeft: '-5%' }} icon={faArrowLeft} className="back-arrow" onClick={handleBackClick} />
                                 <img src={activeUser.profile_image ?? 'https://pinfluence-2024.s3.us-east-2.amazonaws.com/pinfluence_pfp.webp'} className='pfp-in-large' />
                                 <h2>{activeUser.username}</h2>
                             </div>
                         )}
                         <div className="messages-container">
-                            {messages.map((message, ind) => (
+                            {filteredMessages.map((message, ind) => (
                                 <div key={ind} className={`message-wrapper ${message.sender_id === user.id ? 'sent-wrapper' : 'received-wrapper'}`}>
                                     {message.sender_id !== user.id && (
                                         <img
@@ -173,9 +203,7 @@ export default function Messages() {
                                 className="chat-input"
                                 placeholder="Type a message..."
                             />
-                            {
-                                chatInput.length > 0 &&<button type="submit" className="send-button">Send</button>
-                            }
+                            {chatInput.length > 0 && <button type="submit" className="send-button">Send</button>}
                         </form>
                     </div>
                 ) : (
@@ -185,3 +213,4 @@ export default function Messages() {
         </div>
     );
 }
+git 
