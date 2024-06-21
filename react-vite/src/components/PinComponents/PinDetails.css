@@ -324,7 +324,7 @@
 /* } */
 .back-button{
   font-size:1.7rem;
-  font-weight: 600;
+  font-weight: 550;
   /* font-style: italic; */
 }
 @media screen and (max-width: 900px) {
