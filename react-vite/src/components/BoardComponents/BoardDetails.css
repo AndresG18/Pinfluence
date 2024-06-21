@@ -125,9 +125,23 @@
       /* width: 400px; */
       /* margin-right: 100px; */
     }
-    .board-form-container{
-      margin-right: 480px;
-      margin-left: -130px;
-      width: 310px;
-    }
+     .board-form-container{ 
+      /* margin-right: 480px;
+      margin-left: -130px; */
+      /* width:200%; */
+      margin: 0px;
+      margin-top: 20%;
+      /* margin-bottom: 29%; */
+      width: 80vw;
+      /* display: flex; */
+      /* justify-self: center; */
+      position:absolute;
+      left: 5%;
+      /* margin-bottom: 2rem; */
+      right: 5%;
+      /* bottom: -100%; */
+      /* top: 120%; */
+      /* bottom: 5rem; */
+      /* padding-bottom: 50px; */
+    } 
   }
