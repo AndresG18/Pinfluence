@@ -8,11 +8,10 @@
 - **Real-Time Messaging**: Implemented WebSockets using Flask-SocketIO on the backend and socket.io-client on the frontend for real-time messaging between followers and their following, allowing seamless communication without refreshing the page.
 - **Efficient Deployment**: Deployed with Docker and AWS S3 for efficient data handling and environment consistency, ensuring a highly reliable and maintainable application infrastructure.
 - **Dynamic UI with React and Redux**: Designed a visually appealing, responsive user interface using React and Redux, integrating modern UX/UI principles and utilizing Figma for precise wireframe designs, resulting in a seamless and engaging user experience with efficient state management.
-- **Comprehensive Content Management**: Developed extensive CRUD functionalities for pins, boards, and profiles, including advanced features for user follows, search for pins/users, and board saves, ensuring robust content management capabilities that enhance user engagement and retention.
+- **CRUD Functionalies**: Developed extensive CRUD functionalities for pins, boards, and profiles, including advanced features for user follows, search for pins/users, and board saves, ensuring robust content management capabilities that enhance user engagement and retention.
 - **Search and Filter**: Integrated search and filter features, significantly improving user experience by allowing users to find and categorize content efficiently.
 - **Product Magnification and Download**: Each pin can be magnified for a detailed view, and users can download images directly from the platform.
-- **Simultaneous Updates (WebSockets)**: Ensured real-time updates to the pin and board counts when users interact with the content, maintaining data integrity and providing an up-to-date user experience.
-
+- **Live messaging(WebSockets)**: Ensured seamless communication between 2 users by implementing web sockets for a better user experience.
 # Flask React Project
 
 This is the starter for the Flask React project.
