@@ -27,7 +27,7 @@ This guide will walk you through:
 Follow the instructions in the provided link to ensure your application is set up correctly on AWS.
 
 ### Getting Started
-#Clone the project
+# Clone the project
 Install dependencies
 - run 'pipenv install -r requirements.txt' in the root project folder
 - run 'npm install' in react-vite folder
