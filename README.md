@@ -1,6 +1,6 @@
 # Pinfluence
 **Inspired by the immense popularity and innovative features of Pinterest, Pinfluence aims to replicate the core functionalities of Pinterest while providing a unique user experience focused on seamless interaction and real-time updates. Pinfluence is designed to be a highly interactive single-page application that enhances user engagement through a visually appealing interface and advanced features.**
-# [Live Site](https://welp-m0r8.onrender.com/)
+# [Live Site]([https://welp-m0r8.onrender.com/](https://pinfluence-e4ch.onrender.com/))
 
 <img width="1426" alt="Pinfluence_prev" src="https://github.com/AndresG18/Pinfluence/assets/143563900/13218307-7a15-4793-90aa-1fd490190c0c">
 
