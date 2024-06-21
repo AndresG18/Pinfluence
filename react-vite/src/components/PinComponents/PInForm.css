@@ -145,19 +145,20 @@
   @media screen and (max-width:1200px){
     .pin-form-container{
       width: 85%;
+      /* height: 40%; */
     }
-    .pin-form-container{
+    /* .pin-form-container{
       margin-top: 10%;
-    }
+    } */
 
   }
   @media screen and (max-width:800px){
     /* .pin-form-container{
       width: 85%;
     } */
-    .pin-form-container{
-      margin-top: 20%;
-    }
+    /* .pin-form-container{
+      margin-top: 40%;
+    } */
 
   }
 
