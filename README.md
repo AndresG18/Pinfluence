@@ -15,8 +15,11 @@
 # Flask React Project
 
 This is the starter for the Flask React project.
+## DB Schema
+![Screenshot 2024-05-28 at 5 07 16 PM](https://github.com/AndresG18/Pinfluence/assets/143563900/6e211f91-bff0-47ab-8d38-dc498695309d)
 
 ## Getting started
+
 
 1. Clone this repository (only this branch).
 
