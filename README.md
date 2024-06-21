@@ -114,7 +114,9 @@ Add the following keys and values in the Render GUI form:
 - FLASK_ENV production
 - FLASK_APP app
 - SCHEMA (your unique schema name, in snake_case)
-
+-S3_BUCKET
+-S3_KEY
+-S3_SECRET
 In a new tab, navigate to your dashboard and click on your Postgres database
 instance.
 
