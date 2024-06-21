@@ -5,9 +5,9 @@
     /* padding: 20px; */
 }
 .splashPage{
-    margin-top: 70px;
+    margin-top: 60px;
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
     justify-content: space-evenly;
     flex-direction: column;
     align-items: center;
@@ -31,7 +31,9 @@
     margin-left: -16px;
 }
 .splashForm{
-    height: 70%;
+    height: 81%;
+    margin-top: 0px;
+    min-height: min-content;
     margin-bottom: 5%;
     width: 30%;
 }
