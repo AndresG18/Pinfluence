@@ -66,6 +66,14 @@ This is the starter for the Flask React project.
    command to include the `--watch` flag. This flag will rebuild the __dist__
    folder whenever you change your code, keeping the production version up to
    date.
+   
+### Setting Up AWS If not yet setup
+
+For detailed instructions on setting up AWS for deployment, refer to the [AWS Setup Guide](https://github.com/appacademy/Module-6-Resources/tree/3b472f95180110edd49a2352937622bbd6a25054/group_project_resources/AWS).
+
+This guide will walk you through:
+ **Creating and Configuring AWS S3 Buckets**: For storing static assets like images.
+Follow the instructions in the provided link to ensure your application is set up correctly on AWS.
 
 ## Deployment through Render.com
 
@@ -128,6 +136,7 @@ Add the following keys and values:
 __.env__ file. As you work to further develop your project, you may need to add
 more environment variables to your local __.env__ file. Make sure you add these
 environment variables to the Render GUI as well for the next deployment.
+
 
 ### Deploy
 
