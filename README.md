@@ -10,7 +10,7 @@
 - **Dynamic UI with React and Redux**: Designed a visually appealing, responsive user interface using React and Redux, integrating modern UX/UI principles and utilizing Figma for precise wireframe designs, resulting in a seamless and engaging user experience with efficient state management.
 - **CRUD Functionalies**: Developed extensive CRUD functionalities for pins, boards, and profiles, including advanced features for user follows, search for pins/users, and board saves, ensuring robust content management capabilities that enhance user engagement and retention.
 - **Search and Filter**: Integrated search and filter features, significantly improving user experience by allowing users to find and categorize content efficiently.
-- **Product Magnification and Download**: Each pin can be magnified for a detailed view, and users can download images directly from the platform.
+- **Pins**: Each pin can be magnified for a detailed view, and users can download images directly from the platform.
 - **Live messaging(WebSockets)**: Ensured seamless communication between 2 users by implementing web sockets for a better user experience.
 # Flask React Project
 
