@@ -5,7 +5,7 @@
     /* padding: 20px; */
 }
 .splashPage{
-    margin-top: 60px;
+    /* margin-top: 60px; */
     display: flex;
     /* justify-content: center; */
     justify-content: space-evenly;
@@ -39,7 +39,7 @@
 }
 @media screen and (max-width:1008px){
 .splashPage{
-    margin-top: 20px;
+    margin-top: 65px;
     background-image: url(https://i.pinimg.com/originals/a5/6a/ca/a56acad828263b69f6e1583ce811b8e7.gif);
     /* height: 100x; */
     width: 100%;
@@ -60,7 +60,7 @@
 .splashForm{
     border-radius: 2rem;
     /* margin: 20px; */
-    height: 70%;
+    height: 75%;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
