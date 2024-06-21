@@ -124,7 +124,7 @@ export default function Messages() {
         });
         if (response.ok) {
             const newMessage = await response.json();
-            // setMessages(prevMessages => [...prevMessages, newMessage]);
+            // setMessages(prevMessages => [...prevMessages, newMessage]); causes duplicate message
             setChatInput("");
             sortUsers();
         }
