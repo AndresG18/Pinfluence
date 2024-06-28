@@ -48,7 +48,7 @@ export default function Messages() {
             console.log(`Received message: ${data.content}`);
             setMessages(prevMessages => {
                 const updatedMessages = [...prevMessages, data];
-                sortUsers();
+                updateUsersOnNewMessage(data);
                 return updatedMessages;
             });
         });
@@ -93,7 +93,6 @@ export default function Messages() {
         const data = await response.json();
         setMessages(data.messages);
         scrollToBottom();
-        sortUsers();
     };
 
     const handleBackClick = () => {
@@ -122,11 +121,11 @@ export default function Messages() {
                 content: chatInput
             })
         });
+        setChatInput("");
         if (response.ok) {
             const newMessage = await response.json();
-            // setMessages(prevMessages => [...prevMessages, newMessage]); causes duplicate message
-            setChatInput("");
-            sortUsers();
+            // setMessages(prevMessages => [...prevMessages, newMessage]);
+            updateUsersOnNewMessage(newMessage);
         }
     };
 
@@ -134,14 +133,16 @@ export default function Messages() {
         return usersToSort.sort((a, b) => b.lastMessageTime - a.lastMessageTime);
     };
 
-    const sortUsers = async () => {
-        const updatedUsers = await Promise.all(
-            users.map(async (u) => {
-                const lastMessageTime = await getLastMessageTime(u.id);
-                return { ...u, lastMessageTime };
-            })
-        );
-        setUsers(sortUsersByLastMessage(updatedUsers));
+    const updateUsersOnNewMessage = (message) => {
+        setUsers(prevUsers => {
+            const updatedUsers = prevUsers.map(u => {
+                if (u.id === message.sender_id || u.id === message.recipient_id) {
+                    return { ...u, lastMessageTime: new Date(message.timestamp) };
+                }
+                return u;
+            });
+            return sortUsersByLastMessage(updatedUsers);
+        });
     };
 
     const filteredMessages = messages.filter(message =>

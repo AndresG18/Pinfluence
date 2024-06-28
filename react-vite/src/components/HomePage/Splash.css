@@ -31,11 +31,11 @@
     margin-left: -16px;
 }
 .splashForm{
-    height: 81%;
+    height: fit-content;
     margin-top: 0px;
     min-height: min-content;
     margin-bottom: 5%;
-    width: 30%;
+    width:10rem;
 }
 @media screen and (max-width:1008px){
 .splashPage{
