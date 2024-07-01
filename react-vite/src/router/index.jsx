@@ -5,16 +5,16 @@ import Layout from './Layout';
 
 import HomePage from '../components/HomePage/HomePage';
 import ExporePage from '../components/ExplorePage/ExporePage';
-import PinForm from '../components/PinComponents/PinForm';
-import PinUpdate from '../components/PinComponents/PinUpdate';
-import BoardForm from '../components/BoardComponents/BoardForm';
-import BoardUpdate from '../components/BoardComponents/BoardUpdate';
-import PinDetails from '../components/PinComponents/PinDetails';
-import BoardDetails from '../components/BoardComponents/BoardDetails';
+import PinForm from '../components/PinForm/PinForm';
+import PinUpdate from '../components/PinUpdate/PinUpdate';
+import BoardForm from '../components/BoardForm/BoardForm';
+import BoardUpdate from '../components/BoardUpdate/BoardUpdate';
+import PinDetails from '../components/PinDetails/PinDetails';
+import BoardDetails from '../components/BoardDetails/BoardDetails';
 import Search from '../components/ExplorePage/Search';
 // import UserForm from '../components/UserComponents/UserForm';
-import UserPage from '../components/UserComponents/UserPage';
-import Splash from '../components/HomePage/Splash';
+import UserPage from '../components/UserPage/index';
+import Splash from '../components/Splash/index';
 import Messages from '../components/Messages/Messages';
 export const router = createBrowserRouter([
   {

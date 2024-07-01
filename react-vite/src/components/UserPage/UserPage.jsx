@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { thunkGetAllPins } from "../../redux/pins";
 import { thunkGetUser, thunkToggleFollow } from "../../redux/session";
-import BoardList from "../BoardComponents/BoardList";
+import BoardList from "../BoardList";
 import "./UserPage.css";
-import PinList from "../PinComponents/PinList";
+import PinList from "../PinList";
 import { FaPinterest } from "react-icons/fa";
 export default function UserPage() {
   const { userId } = useParams();

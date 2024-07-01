@@ -82,7 +82,7 @@ function ProfileButton() {
                 onItemClick={closeMenu}
                 modalComponent={<LoginFormModal />}
               />
-              <OpenModalButton
+              <OpenModalButtonSignup
                 buttonText="Sign Up"
                 className="signup-button"
                 modalComponent={<SignupFormModal />}

@@ -4,7 +4,7 @@ import { useDropzone } from 'react-dropzone';
 import { useNavigate, useParams } from "react-router-dom";
 import { thunkGetPin, thunkEditPin } from "../../redux/pin";
 import { FaPinterest, FaTrash } from "react-icons/fa";
-import './PinForm.css';
+import '../PinForm/PinForm.css';
 
 const PinUpdate = () => {
   const { pinId } = useParams();

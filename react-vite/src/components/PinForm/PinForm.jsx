@@ -6,9 +6,9 @@ import { thunkAddPinToBoard } from '../../redux/board';
 import { thunkGetUserBoards } from '../../redux/boards';
 import { FaTrash } from 'react-icons/fa';
 import './PinForm.css';
-import '../BoardComponents/BoardDetails.css';
+import '../BoardDetails/BoardDetails.css';
 import { useNavigate } from 'react-router-dom';
-import BoardForm from '../BoardComponents/BoardForm';
+import BoardForm from '../BoardForm';
 
 const PinForm = () => {
   const dispatch = useDispatch();
