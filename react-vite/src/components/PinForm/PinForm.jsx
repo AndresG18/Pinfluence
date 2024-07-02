@@ -29,6 +29,9 @@ const PinForm = () => {
     if (user) {
       dispatch(thunkGetUserBoards()).then(() => setLoaded(true));
     }
+    else{
+      navigate('/')
+    }
   }, [dispatch, user]);
 
   const onDrop = (acceptedFiles, rejectedFiles) => {
