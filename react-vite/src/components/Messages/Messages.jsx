@@ -19,10 +19,14 @@ export default function Messages() {
     const messagesEndRef = useRef(null);
     const navigate = useNavigate();
 
+    useEffect(()=>{
+        if(!user){
+            navigate('/');
+        }
+    },[user])
     useEffect(() => {
         if (!user) {
             navigate('/');
-            return;
         }
 
         const fetchUsers = async () => {
