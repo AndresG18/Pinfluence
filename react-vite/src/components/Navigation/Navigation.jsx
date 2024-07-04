@@ -6,7 +6,7 @@ import { FaPinterest, FaSearch } from 'react-icons/fa';
 import { AiOutlineMessage } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 // import { IoIosArrowDown } from 'react-icons/io';
-import { thunkLogin } from '../../redux/session';
+// import { thunkLogin } from '../../redux/session';
 import { SearchContext } from '../../context/SearchContext';
 
 function Navigation() {
