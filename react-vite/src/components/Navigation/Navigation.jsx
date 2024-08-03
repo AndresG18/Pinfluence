@@ -15,14 +15,6 @@ function Navigation() {
   const user = useSelector(state => state.session.user);
   const { query, setQuery } = useContext(SearchContext);
 
-  // const login = () => {
-  //   const loginObj = {
-  //     "email": "demoUser@gmail.com",
-  //     "password": 'password123'
-  //   };
-  //   dispatch(thunkLogin(loginObj));
-  // };
-
   const handleSearchChange = (e) => {
     setQuery(e.target.value);
     navigate('/search');
