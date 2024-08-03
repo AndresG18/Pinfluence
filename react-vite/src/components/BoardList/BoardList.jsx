@@ -1,6 +1,5 @@
-// import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import { getAllBoardPins } from '../../redux/pins';
+
 const BoardList = ({ boards }) => {
   const navigate = useNavigate();
   const handleBoardClick = (boardId) => {
