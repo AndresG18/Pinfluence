@@ -24,6 +24,7 @@
     color: #555;
   }
   
+
   .pin {
     background: #fff;
     border-radius: 16px;
@@ -138,4 +139,4 @@
       /* bottom: 5rem; */
       /* padding-bottom: 50px; */
     } 
-  }
+  }}
