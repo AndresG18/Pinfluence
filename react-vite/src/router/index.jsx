@@ -11,7 +11,6 @@ import BoardUpdate from '../components/BoardUpdate/BoardUpdate';
 import PinDetails from '../components/PinDetails/PinDetails';
 import BoardDetails from '../components/BoardDetails/BoardDetails';
 import Search from '../components/ExplorePage/Search';
-// import UserForm from '../components/UserComponents/UserForm';
 import UserPage from '../components/UserPage/index';
 import Splash from '../components/Splash/index';
 import Messages from '../components/Messages/Messages';
