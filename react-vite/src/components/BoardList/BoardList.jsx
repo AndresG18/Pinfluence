@@ -6,7 +6,6 @@ const BoardList = ({ boards }) => {
     navigate(`/boards/${boardId}`);
   };
 
-
   return (
     <div className="board-list">
       {boards.map((board) => {
@@ -31,7 +30,6 @@ const BoardList = ({ boards }) => {
               )}
             </div>
             <h4>{board.name}</h4>
-            {/* <p>{board.description}</p> */}
           </div>
         );
       })}
