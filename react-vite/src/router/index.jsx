@@ -2,7 +2,6 @@ import { createBrowserRouter } from 'react-router-dom';
 import LoginFormPage from '../components/LoginFormPage';
 import SignupFormPage from '../components/SignupFormPage';
 import Layout from './Layout';
-
 import HomePage from '../components/HomePage/HomePage';
 import ExporePage from '../components/ExplorePage/ExporePage';
 import PinForm from '../components/PinForm/PinForm';
